@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Запись на ТО></title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
+
+	<style type="text/css">
+
+		@media screen and (max-width: 414px) {
+	    	.col-xxs-12 {
+	    		width: 100%;
+	    	}
+	   	}
+
+		.calendar-sm {
+			margin-top: 10px;
+		}
+
+		.table-sm>tbody>tr>td, 
+		.table-sm>tbody>tr>th, 
+		.table-sm>tfoot>tr>td, 
+		.table-sm>tfoot>tr>th, 
+		.table-sm>thead>tr>td, 
+		.table-sm>thead>tr>th {
+			padding: 4px !important;
+			text-align: center;
+		}
+
+		.change-range {
+			cursor: 	pointer;	
+		}
+
+		.btn-vk
+		{
+			padding: 7px 16px 8px;
+		    margin: 0;
+		    font-size: 12.5px;
+		    display: inline-block;
+		    zoom: 1;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    outline: none;
+		    font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,sans-serif;
+		    vertical-align: top;
+		    line-height: 15px;
+		    text-align: center;
+		    text-decoration: none;
+		    background: none;
+		    background-color: #5e81a8;
+		    color: #fff;
+		    border: 0;
+		    border-radius: 2px;
+		    box-sizing: border-box;
+		}
+
+		.btn-vk:hover,
+		.btn-vk:focus{
+			background-color:#6888ad;
+			text-decoration:none;
+			color: #fff;
+			outline: none !important;
+		}
+
+	</style>
+
+</head>
+<body class="vk-app">
+
+<div id="success" style="display: none;" class="text-center">
+	<div id="success_content" style="margin-bottom: 20px;">
+	</div>
+	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
+</div>
+
+<form method="POST" id="formService" action="https://www.swedmobil.ru/form-submit">
+
+	<input type="hidden" name="formId" value="2">
+	<input type="hidden" name="dateVisit" value="">
+
+	<div class="row">
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="name">Как к вам обращаться?*</label>
+	    <input type="text" class="form-control" id="name" name="name" placeholder="Александр Александров">
+	  </div>
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="email">Ваш e-mail*</label>
+	    <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com">
+	  </div>
+
+	</div>
+
+	<div class="row">
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="phone">Ваш контактный телефон*</label>
+    <input type="text" class="form-control" id="phone" name="phone" placeholder="+7 (777) 777-77-77">
+  </div>
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="car">Какой у Вас автомобиль?</label>
+    <input type="text" class="form-control" id="car" name="car" placeholder="Volvo XC90 2012г D4">
+  </div>
+
+  </div>
+
+  <div class="row">
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">На какой сервисной станции Вы хотите обслуживаться?</label>
+    <select name="location" class="form-control" id="location">
+    	<option value="0">Любой автоцентр</option>
+    	<option value="1">Свид-Мобиль на Энергетиков</option>
+    	<option value="3">Свид-Мобиль на М. Жукова</option>
+    	<option value="2">Свид-Мобиль на Приморском</option>
+    </select>
+    <small>Доступное время визита можно будет выбрать после выбора сервисной станции.</small>
+
+	<nav id="calendarPagination" style="	display: none;">
+	  <ul class="pager" >
+	    <li class="previous"  ><span class="change-range" data-range="prev" aria-hidden="true">&larr;</span></li>
+	    <li><i style="font-size: 24px;">Доступное время</i></li>
+	    <li class="next" ><span aria-hidden="true" class="change-range" data-range="next">&rarr;</span></li>
+	  </ul>
+	</nav>
+
+    <div id="calendarContainer" class="calendar-sm">
+    </div>
+
+  </div>
+
+<div class=" col-xs-12 form-group">
+
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#tab_to" aria-controls="tab_to" role="tab" data-toggle="tab"><i class="fa fa-flag-checkered"></i> Плановое ТО</a></li>
+		    <li role="presentation"><a href="#tab_diagnostic" aria-controls="tab_diagnostic" role="tab" data-toggle="tab"><i class="fa fa-wrench"></i>  Диагностика</a></li>
+		    <li role="presentation"><a href="#tab_wheel" aria-controls="tab_wheel" role="tab" data-toggle="tab"><i class="fa fa-circle-thin"></i> Шиномонтаж</a></li>
+		    <li role="presentation"><a href="#tab_other" aria-controls="tab_other" role="tab" data-toggle="tab"><i class="fa fa-info-circle"></i>  Прочее</a></li>
+		  </ul>
+
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="tab_to">
+		    	<div class="row">
+		    		<div class="col-xs-4">
+		    			<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-0">
+						      TO-0
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-20 000км">
+						      TO-20 000км
+						    </label>
+						</div>
+		    		</div>
+		    		<div class="col-xs-4">
+		    			<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-40 000км">
+						      TO-40 000км
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-60 000км">
+						      TO-60 000км
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-80 000км">
+						      TO-80 000км
+						    </label>
+						</div>
+		    		</div>
+		    		<div class="col-xs-4">
+		    			<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-100 000км">
+						      TO-100 000км
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="TO-120 000км">
+						      TO-120 000км
+						    </label>
+						</div>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="tab_diagnostic">
+		    	<div class="row">
+		    		<div class="col-xs-6">
+		    			<div class="checkbox">
+						    <label>
+						      <input name="visit[]" type="checkbox" value="Диагностика работы двигателя">
+						      Диагностика работы двигателя
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input name="visit[]" type="checkbox" value="Диагностика подвески автомобиля">
+						     Диагностика подвески автомобиля
+						    </label>
+						</div>
+		    		</div>
+		    		<div class="col-xs-6">
+		    			<div class="checkbox">
+						    <label>
+						      <input name="visit[]" type="checkbox" value="Диагностика электронных систем авто">
+						      Диагностика электронных систем авто
+						    </label>
+						</div>
+						<div class="checkbox">
+						    <label>
+						      <input name="visit[]" type="checkbox" value="Комплексная диагностика авто">
+						     Комплексная диагностика авто
+						    </label>
+						</div>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="tab_wheel">
+				<div class="row">
+		    		<div class="col-xs-6">
+				    	<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="Балансировка 4-х колес">
+						      Балансировка 4-х колес
+						    </label>
+						</div>
+		    		</div>
+		    		<div class="col-xs-6">
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="Шиномонтаж 4-х колес">
+						      Шиномонтаж 4-х колес
+						    </label>
+						</div>
+		    		</div>
+		    	</div>
+			</div>
+		    <div role="tabpanel" class="tab-pane" id="tab_other">
+		    	<div class="row">
+		    		<div class="col-xs-6">
+				    	<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="Проверка углов установки колес (Сход-Развал)">
+						      Проверка углов установки колес (Сход-Развал)
+						    </label>
+						</div>				    	
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="Замена лобового стекла(Без датчика дождя)">
+						      Замена лобового стекла
+						    </label>
+						</div>
+		    		</div>
+		    		<div class="col-xs-6">
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="visit[]" value="Замена задних тормозных колодок(Не вентилируемые задние тормозные диски)">
+						      Замена задних тормозных колодок
+						    </label>
+						</div>
+		    		</div>
+		    	</div>
+		    </div>
+		  </div>
+
+	</div>
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Дополнительно</label>
+	<textarea name="messages" class="form-control" rows="3"></textarea>
+  </div>
+
+  <div class="col-xs-12 form-group">
+     <button type="submit" id="formSubmit" class="btn btn-vk">Отправить</button>
+  </div>
+
+</div>
+
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script src="/bundles/swedmnews/js/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+<script src="/bundles/swedmnews/js/bootstrapvalidator/dist/js/language/ru_RU.js"></script>
+<script src="//oss.maxcdn.com/jquery.mask/1.11.4/jquery.mask.min.js"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	VK.init(function() { 
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+	renderTable = function(countDays, location, startDate, endDate) {
+
+    	if (location == 0) {  
+    		$('#calendarPagination').hide();
+    		$('input[name="dateVisit"]').val( '' ).trigger('change');
+    		return calendarContainer.empty();
+    	}
+
+    	$.ajax({
+    		url: "https://swedmobil.ru/api/v1/service-load",
+    		data: 'location=' + location + '&startDate=' + startDate.toISOString().split('.')[0]+"Z" + '&endDate=' + endDate.toISOString().split('.')[0]+"Z",
+    		success: function(data, textStatus, jqXHR) {
+
+    			$('input[name="dateVisit"]').val( '' ).trigger('change');
+    			calendarContainer.empty();
+
+    			var table = $('<table />')
+    				.addClass('table')
+    				.addClass('table-sm')
+    				.appendTo(calendarContainer);
+
+    			var thead = $('<thead/>')
+    				.appendTo(table);
+
+    			var tbody = $('<tbody/>')
+    				.appendTo(table);
+
+    			for(var i = 0; i < 12; i++) {
+    				var tr_tbody = $('<tr/>')
+    					.appendTo(tbody);
+
+    				for (var j = 0; j < countDays; j++) {
+    					var td = $('<td/>')
+    						.appendTo(tr_tbody)
+    				}
+    			}
+
+    			var tr_thead = $('<tr/>')
+    				.appendTo(thead);
+
+
+    			// add date to thead
+    			var dt = startDate.clone();
+    			for (var i = 0; i < countDays; i++) {
+    				
+
+    				var th = $('<th/>')
+    					.width(100)
+    					.html(dt.format('ddd D MMM'))
+    					.appendTo(tr_thead);
+
+    				dt = dt.add(1, 'days');
+    			}
+
+    			$.each(data, function(i, el) {
+
+    				// var dt = moment(el.dayDate);
+
+    				// var th = $('<th/>')
+    				// 	.html(dt.format('dddd'))
+    				// 	.appendTo(tr_thead);
+
+
+    				$.each(el.hours, function(j, h) {
+
+
+    					var hd = moment(h.dateBegin);
+
+
+
+    					var button_class = 'btn-default';
+
+    					if (h.busy < 4) {
+    						button_class = 'btn-success';
+    					} else if (h.busy < 8) {
+    						button_class = 'btn-warning';
+    					} else if (h.busy >= 8) {
+    						button_class = 'btn-danger';
+    					}
+
+    					if (!moment().isAfter(hd)) {
+    					
+	    					var btn = $('<button/>')
+	    						.attr('data-datevisit', hd.format('X'))
+	    						.addClass('btn')
+	    						.addClass(button_class)
+	    						.addClass('btn-block')
+	    						.addClass('btn-sm')
+	    						.text(hd.format('H:mm'))
+	    						.appendTo(tbody.find('tr:nth-child('+(j + 1)+') td:nth-child('+(i + 1)+')'));
+
+    					} else {
+	    					var btn = $('<button/>')
+	    						.addClass('btn')
+	    						.addClass('btn-default')
+	    						.addClass('btn-block')
+	    						.addClass('disabled')
+	    						.attr('disabled', 'disabled')
+	    						.text('-')
+	    						.appendTo(tbody.find('tr:nth-child('+(j + 1)+') td:nth-child('+(i + 1)+')'));
+    					}
+
+    				});
+
+    			});
+
+    			if (!moment(startDate.format('YYYY-MM-DD')).isAfter( moment().format('YYYY-MM-DD') ) ) {
+    				$('li.previous').attr('disabled', 'disabled').addClass('disabled');
+    			} else {
+    				$('li.previous').removeAttr('disabled').removeClass('disabled');
+    			}
+
+    			$('#calendarPagination').show();
+    		},
+    		error: function( jqXHR, textStatus, errorThrown ) {
+    			console.log(jqXHR, textStatus, errorThrown);
+    		},
+    	})
+	}
+
+	var calendarContainer = $('#calendarContainer');
+
+	function div(val, by){
+	    return (val - val % by) / by;
+	}
+
+	$('.change-range').on('click', function	(event) {
+
+		if ( $(event.target).data('range') == 'next') {
+			startDate = startDate.add('1', 'days');
+			endDate	 = startDate.clone();
+			endDate.add(countDays + 1, 'days');
+			renderTable(countDays, $('select[name="location"]').val(), startDate, endDate);
+		}
+
+		if ( $(event.target).data('range') == 'prev') {
+
+			if (!moment(startDate.format('YYYY-MM-DD')).isAfter( moment().format('YYYY-MM-DD') ) ) { return	false; }
+
+			startDate = startDate.add('-1', 'days');
+			endDate	 = startDate.clone();
+			endDate.add(countDays + 1, 'days');
+			renderTable(countDays, $('select[name="location"]').val(), startDate, endDate);
+		}
+	})
+
+	$(window).resize(function() {
+
+		var cd = div(calendarContainer.width(), 100);
+
+		if (cd != countDays) {
+
+			countDays = cd;
+
+			if ($('select[name="location"]').val() != 0) {
+
+				var sd = moment();
+				var ed  =moment().add(countDays + 1, 'days');
+
+				renderTable(countDays, $('select[name="location"]').val(), sd, ed)
+			}
+		}
+
+	});
+
+	var countDays = div(calendarContainer.width(), 100);
+
+	moment.lang('ru');
+
+	$(document).on('click', '.btn-sm', function(event) {
+
+		event.stopPropagation();
+		event.preventDefault();
+
+		$('.btn-sm.active').removeClass('active');
+		$(event.target).addClass('active');
+
+		$('input[name="dateVisit"]').val( $(event.target).data('datevisit') ).trigger('change');
+
+	});
+
+    console.log( "swed mobil app ready!" );
+
+	var startDate = moment();
+	var endDate  =moment().add(countDays + 1, 'days');
+
+    $('#location').on('change', function(){
+    	renderTable(countDays, $(this).val(), startDate, endDate )
+    });
+
+
+	$('#success_btn').on('click', function(){
+		$('#success').hide();
+		$('input[name="dateVisit"]').val( '' ).trigger('change');
+		$('#formService').show();
+	});
+
+    // 
+    // $('#formService').on('submit', function(event) {
+    // 	event.stopPropagation();
+    // 	event.preventDefault();
+
+    // });
+
+	// $('#formService').ajaxForm(options);
+
+	$('#formService')
+	.bootstrapValidator({
+		locale: 'ru_RU',
+		fields: {
+			name: {
+                validators: {
+                    notEmpty: {
+                        message: 'Укажите Ваше Имя'
+                    }
+                }
+            },
+            email: {
+             	validators: {
+                    notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    }
+                }
+            },
+            phone: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    },
+            	}
+            }
+		}
+	})
+	.on('keyup', '[name="email"], [name="phone"]', function(e) {
+		var email 	= $('#formService').find('[name="email"]').val(),
+            phone   = $('#formService').find('[name="phone"]').val(),
+            bv      = $('#formService').data('bootstrapValidator');
+
+        switch ($(this).attr('name')) {
+			case 'email':
+
+				if (email != '') {
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (email === '' && phone != '') {
+					bv.enableFieldValidators('email', false).revalidateField('phone');
+				}
+
+				if (email === '' && phone === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (email != '' && phone === '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+                break;
+            case 'phone':
+
+				if (phone != '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (phone === '' && email != '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+				if (phone === '' && email === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (phone != '' && email === '') {
+					bv.enableFieldValidators('email', false).revalidateField('email');
+				}
+                    
+                break;
+        	default:
+                break;
+        }
+
+	})
+	.find('[name="phone"]').mask('+7 (999) 999-99-99').end()
+	.on('success.form.bv', function(e, data) {
+
+        // Prevent form submission
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Some instances you can use are
+        var $form = $(e.target),        // The form instance
+            fv    = $(e.target).data('bootstrapValidator'); // FormValidation instance
+
+        // Do whatever you want here ...
+        $form.bootstrapValidator('disableSubmitButtons', false);
+
+
+        $('#formService').ajaxSubmit({ 
+	        success: function (responseText, statusText, xhr, $form)  { 
+
+	        	$form.resetForm();
+	        	fv.resetForm();
+
+				$('#formSubmit').removeAttr('disabled');
+
+				$('#success_content').html(responseText);
+				$('#formService').hide();
+				$('#success').show();
+				$('#success_btn').focus();
+				
+			},
+	        beforeSubmit:  function () {
+		    	$('#formSubmit').attr('disabled', 'disabled');
+		    },
+	        error:  function (msg) {
+		    	alert('Ошибка при отправке: ' + msg.statusText);
+		    	$('#formSubmit').removeAttr('disabled');
+		    },
+	    });
+
+        return false;
+    });
+	;
+
+});
+
+</script>
+
+</body>
+</html>

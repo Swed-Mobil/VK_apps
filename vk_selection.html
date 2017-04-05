@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Подобрать автомобиль</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://swedmobil.ru/bundles/swedmnews/css/jquery-ui-slider-pips.css">
+
+	<style type="text/css">
+
+		#success {
+			margin-top: 50px; 
+		}
+
+		@media screen and (max-width: 414px) {
+	    	.col-xxs-12 {
+	    		width: 100%;
+	    	}
+	   	}
+
+	   	#formPickCar{
+			padding: 10px;
+		}
+
+		.table-sm>tbody>tr>td, 
+		.table-sm>tbody>tr>th, 
+		.table-sm>tfoot>tr>td, 
+		.table-sm>tfoot>tr>th, 
+		.table-sm>thead>tr>td, 
+		.table-sm>thead>tr>th {
+			padding: 4px !important;
+			text-align: center;
+		}
+
+		.change-range {
+			cursor: 	pointer;	
+		}
+
+		.btn-vk
+		{
+			padding: 7px 16px 8px;
+		    margin: 0;
+		    font-size: 12.5px;
+		    display: inline-block;
+		    zoom: 1;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    outline: none;
+		    font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,sans-serif;
+		    vertical-align: top;
+		    line-height: 15px;
+		    text-align: center;
+		    text-decoration: none;
+		    background: none;
+		    background-color: #5e81a8;
+		    color: #fff;
+		    border: 0;
+		    border-radius: 2px;
+		    box-sizing: border-box;
+		}
+
+		.btn-vk:hover,
+		.btn-vk:focus{
+			background-color:#6888ad;
+			text-decoration:none;
+			color: #fff;
+			outline: none !important;
+		}
+
+	</style>
+
+</head>
+<body class="vk-app">
+
+<div id="success" style="display: none;" class="text-center">
+	<div id="success_content" style="margin-bottom: 20px;">
+	</div>
+	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
+</div>
+
+<form method="POST" id="formPickCar" action="https://www.swedmobil.ru/form-submit">
+
+	<input type="hidden" name="formId" value="34">
+
+	<h3>Контактные данные</h3>
+  	<hr style="margin-top: 0px;">
+
+	<div class="row">
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="userName">Имя и Фамилия *</label>
+	    <input type="text" class="form-control" id="userName" name="userName" placeholder="Иванов Иван">
+	  </div>
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="userMail">Ваш e-mail*</label>
+	    <input type="email" class="form-control" id=" userMail" name=" userMail" placeholder="example@example.com">
+	  </div>
+
+	</div>
+
+	<div class="row">
+
+		<div class="col-xs-6 col-xxs-12 form-group">
+			<label class=" control-label" for="userPhone">Ваш телефон*</label>
+			<input type="text" class="form-control" id="userPhone" name="userPhone" placeholder="+7(777) 777-77-77">
+		</div>
+
+  </div>
+
+  <h3>Автомобиль</h3>
+  <hr style="margin-top: 0px;">
+
+
+  <div class="row">
+
+  	<div class="col-xs-6 form-group">
+
+		<label class=" control-label" for="">Цена</label>
+
+		<div id="price-range" class="form-control"></div>
+
+		<div class="pull-left">
+			<span style="display:inline-block; vertical-align: middle;">от</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-price" name="minPrice" class="form-control" autocomplete="off" value="0">
+    		<span style="display:inline-block; vertical-align: middle;">руб.</span>
+		</div>
+		<div class="pull-right">
+			<span style="display:inline-block; vertical-align: middle;">до</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-price" name="maxPrice" class="form-control" autocomplete="off" value="5 000 000">
+    		<span style="display:inline-block; vertical-align: middle;">руб.</span>
+		</div>
+
+  	</div>
+
+  </div>
+
+  <div class="row">
+
+  	<div class="col-xs-6 form-group">
+  		<label class=" control-label" for="">Марка</label>
+  		<input type="hidden" name="markaName" id="realMarkaName" value="Volvo">
+  		<select name="mark" class="form-control" id="mark"></select>
+  	</div>
+
+  </div>
+
+  <div class="row" id="row-model-title" style="display:none;">
+
+  	<div class="col-xs-6 form-group" style="margin-bottom: 0px !important;">
+  		<label class=" control-label" for="">Модель</label>
+
+  	</div>
+
+  </div>
+
+  <div class="row" id="row-model-data"></div>
+
+  <div class="row">
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Удобный автосалон</label>
+    <select name="location" class="form-control">
+    	<option>Любой</option>
+    	<option value="2">Свид-Мобиль на Энергетиков</option>
+    	<option value="1">Свид-Мобиль на М. Жукова</option>
+    	<option value="3">Свид-Мобиль на Приморском</option>
+    </select>
+  </div>
+
+</div>
+
+<div class="row">
+	<div class="col-xs-6 form-group">
+
+	  	<label class=" control-label" for="">Год выпуска</label>
+
+		<div id="year-range" class="form-control"></div>
+
+		<div class="pull-left">
+			<span style="display:inline-block; vertical-align: middle;">от</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-year" name="minYear" class="form-control" autocomplete="off" value="2008">
+    		<span style="display:inline-block; vertical-align: middle;">г.</span>
+		</div>
+		<div class="pull-right">
+			<span style="display:inline-block; vertical-align: middle;">до</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-year" name="maxYear" class="form-control" autocomplete="off" value="2017">
+    		<span style="display:inline-block; vertical-align: middle;">г.</span>
+		</div>
+
+	</div>
+	<div class="col-xs-6 form-group">
+
+	  	<label class=" control-label" for="">Пробег</label>
+
+		<div id="race-range" class="form-control"></div>
+
+		<div class="pull-left">
+			<span style="display:inline-block; vertical-align: middle;">от</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-race" name="minRace" class="form-control" autocomplete="off" value="0">
+    		<span style="display:inline-block; vertical-align: middle;">км</span>
+		</div>
+		<div class="pull-right">
+			<span style="display:inline-block; vertical-align: middle;">до</span>
+			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-race" name="maxRace" class="form-control" autocomplete="off" value="500 000">
+    		<span style="display:inline-block; vertical-align: middle;">км</span>
+		</div>
+
+	</div>	
+</div>
+
+<div class="row">
+
+ 	<div class="col-xs-4 form-group">
+	    <label class=" control-label" for="car">Коробка передач</label>
+	   	<div class="col-xs-12">
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="kpp[]" value="Автоматическая">
+			      Автоматическая
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="kpp[]" value="Механическая">
+			     Механическая
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="kpp[]" value="Роботизированная">
+			     Роботизированная
+			    </label>
+			</div>
+		</div>
+  	</div>
+  	 <div class="col-xs-4 form-group">
+	    <label class=" control-label" for="car">Двигатель</label>
+	  	<div class="col-xs-12">
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="fuel[]" value="Бензин">
+			      Бензин
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="fuel[]" value="Дизель">
+			     Дизель
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+			      <input type="checkbox" name="fuel[]" value="Гибридный">
+			     Гибридный
+			    </label>
+			</div>
+		</div>
+  	</div>
+  	  <div class="col-xs-4 form-group">
+    <label class=" control-label" for="car">Цвет кузова:</label>
+
+	<div class="col-xs-12">
+		<div class="checkbox">
+		    <label>
+		      <input type="checkbox" name="bodyColor[]" value="Темный">
+		      Темный
+		    </label>
+		</div>
+		<div class="checkbox">
+		    <label>
+		      <input type="checkbox" name="bodyColor[]" value="Светлый">
+		     Светлый
+		    </label>
+		</div>
+		<div class="checkbox">
+		    <label>
+		      <input type="checkbox" name="bodyColor[]" value="Яркий">
+		     Яркий
+		    </label>
+		</div>
+		<div class="checkbox">
+		    <label>
+		      <input type="checkbox" name="bodyColor[]" value="Любой">
+		     Любой
+		    </label>
+		</div>
+	</div>
+
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Дополнительно:</label>
+	<textarea name="info" class="form-control" rows="5" placeholder="Опишите подробно все опции, которыми должен быть оснащен ваш будущий автомобиль"></textarea>
+  </div>
+
+  <div class="col-xs-12 form-group">
+     <button type="submit" id="formSubmit" class="btn btn-vk">Отправить</button>
+  </div>
+
+</div>
+
+</form>
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/js/language/ru_RU.js"></script>
+<script src="//oss.maxcdn.com/jquery.mask/1.11.4/jquery.mask.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/jquery-ui-slider-pips.js"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	function adjustIframeHeight() {
+		VK.callMethod("resizeWindow", null, $('#formPickCar').height() + 20);
+    }
+
+	VK.init(function() { 
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+    console.log( "swed mobil app ready!" );
+
+    var mark = $('#mark'),
+    	empty_mark = $('<option/>')
+			.attr('value', "")
+			.text('Любая марку')
+			.appendTo(mark);
+			
+
+	$.ajax({
+		method: 'get',
+		url: 'https://swedmobil.ru/api/v1/usedcars/all-makes',
+		success: function(responseText, statusText, xhr, $form){
+
+			$.each(responseText, function(i, dp) {
+				var option = $('<option/>')
+					.text(dp.make)
+					.attr('value', dp.makeId)
+					.val(dp.makeId)
+					.appendTo(mark);
+
+				if (dp.makeId == 274)
+					option.attr('selected', 'selected');
+
+			})
+
+			mark.trigger('change');
+		},
+		error: function() {
+
+		}
+	})
+
+	var $models_data = $('#row-model-data');
+
+	mark.on('change', function(event){
+
+		$('#realMarkaName').val($(event.target).find(':selected').html()).trigger('change');
+
+		$('#row-model-title').hide();
+
+		$models_data.empty();
+
+		if( $(event.target).val() === '' ) {
+			return;
+		}
+
+		$.ajax({
+			method: 'get',
+			url: 'https://swedmobil.ru/api/v1/usedcars/all-models/' + $(event.target).val(),
+			success: function(responseText, statusText, xhr, $form){
+
+				var colArr = [],
+					colIndex = 0,
+					index = 0,
+					sep = responseText.length / 3 >> 0;
+
+				colArr.push( $('<div />')
+					.addClass('col-xs-4 form-group')
+					.appendTo($models_data) );
+
+				colArr.push( $('<div />')
+					.addClass('col-xs-4 form-group')
+					.appendTo($models_data) );
+
+				colArr.push( $('<div />')
+					.addClass('col-xs-4 form-group')
+					.appendTo($models_data) );
+
+				$.each(responseText, function(i, dp) {
+
+					var $cbx_wrap = $('<div />')
+						.addClass('checkbox')
+						.appendTo(colArr[colIndex]);
+
+					var $label = $('<label />')
+						.text(dp.model)
+						.appendTo($cbx_wrap);
+
+					var $input = $('<input />')
+						.attr('type', 'checkbox')
+						.attr('name', 'model[]')
+						.attr('value', dp.model)
+						.prependTo($label);
+
+					index = index + 1;
+
+					if (index > sep) {
+						colIndex = colIndex + 1;
+						index = 0;
+					}
+				});
+
+				$('#row-model-title').show();
+
+				adjustIframeHeight();
+			},
+			error: function() {
+
+			}
+		})
+
+	});
+
+	var changeValMin = function (input, slider, locale = false) {
+
+		var val = input.val().replace(/\s/g,'');
+
+		if (val < slider.slider("option", "min")) {
+		  val = slider.slider("option", "min");
+		}
+		else if (val > slider.slider("option", "values")[1]) {
+		  val = slider.slider("option", "values")[1];
+		}
+		else if (!$.isNumeric(val)) {
+		  val = slider.slider("option", "values")[0];
+		}
+
+		slider.slider("values", 0, parseFloat(val));
+
+		locale ? input.val(parseFloat(val).toLocaleString()) : input.val(parseFloat(val)) ;
+	};
+
+	var changeValMax = function (input, slider, locale = false) {
+
+		var val = input.val().replace(/\s/g,'');
+
+		if (val > slider.slider("option", "max")) {
+		  val = slider.slider("option", "max");
+		}
+		else if (val < slider.slider("option", "values")[0]) {
+		  val = slider.slider("option", "values")[0];
+		}
+		else if (!$.isNumeric(val)) {
+		  val = slider.slider("option", "values")[1];
+		}
+
+		slider.slider("values", 1, parseFloat(val));
+		locale ? input.val(parseFloat(val).toLocaleString()) : input.val(parseFloat(val)) ;
+	};
+
+	// price range
+
+	var $priceRange = $( "#price-range" ),
+		$minPrice = $('input[name="minPrice"]'),
+		$maxPrice = $('input[name="maxPrice"]');
+
+    $priceRange.slider({
+      range: true,
+      min: 0,
+      max: 5000000,
+      step: 10000,
+      values: [ 0, 5000000 ],
+      slide: function( event, ui ) {
+      	$minPrice.val( Number(ui.values[ 0 ]).toLocaleString() ).trigger('change');
+      	$maxPrice.val( Number(ui.values[ 1 ]).toLocaleString() ).trigger('change');
+      }
+    }).slider("pips", {
+    	labels: {"first": "", "last": ""}
+    });
+
+    $minPrice.on('change', function(event) {
+    	changeValMin($(this), $priceRange, true);
+    });
+
+    $maxPrice.on('change', function(event) {
+    	changeValMax($(this), $priceRange, true);
+    });
+
+    // year range
+
+	var $yearRange = $( "#year-range" ),
+		$minYear = $('input[name="minYear"]'),
+		$maxYear = $('input[name="maxYear"]');
+
+    $yearRange.slider({
+      range: true,
+      min: 1995,
+      max: 2017,
+      step: 1,
+      values: [ 2008, 2017 ],
+      slide: function( event, ui ) {
+      	$minYear.val( Number(ui.values[ 0 ]).toLocaleString() ).trigger('change');
+      	$maxYear.val( Number(ui.values[ 1 ]).toLocaleString() ).trigger('change');
+      }
+    }).slider("pips", {
+    	labels: {"first": "", "last": ""}
+    });
+
+    $minYear.on('change', function(event) {
+    	changeValMin($(this), $yearRange, false);
+    });
+
+    $maxYear.on('change', function(event) {
+    	changeValMax($(this), $yearRange, false);
+    });
+
+    // race range
+
+	var $raceRange = $( "#race-range" ),
+		$minRace = $('input[name="minRace"]'),
+		$maxRace = $('input[name="maxRace"]');
+
+    $( "#race-range" ).slider({
+      range: true,
+      min: 0,
+      max: 500000,
+      step: 10000,
+      values: [ 0, 500000 ],
+      slide: function( event, ui ) {
+      	$minRace.val( Number(ui.values[ 0 ]).toLocaleString() ).trigger('change');
+      	$maxRace.val( Number(ui.values[ 1 ]).toLocaleString() ).trigger('change');
+      }
+    }).slider("pips", {
+    	labels: {"first": "", "last": ""}
+    });
+
+    $minRace.on('change', function(event) {
+    	changeValMin($(this), $raceRange, true);
+    });
+
+    $maxRace.on('change', function(event) {
+    	changeValMax($(this), $raceRange, true);
+    });
+
+	$('#success_btn').on('click', function(){
+		$('#success').hide();
+		$('input[name="dateVisit"]').val( '' ).trigger('change');
+		$('#formPickCar').show();
+	});
+
+	$('#formPickCar')
+	.bootstrapValidator({
+		locale: 'ru_RU',
+		fields: {
+			userName: {
+                validators: {
+                    notEmpty: {
+                        message: 'Укажите Ваше Имя'
+                    }
+                }
+            },
+             userMail: {
+             	validators: {
+                    notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    }
+                }
+            },
+            userPhone: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    },
+            	}
+            }
+		}
+	})
+	.on('keyup', '[name=" userMail"], [name="userPhone"]', function(e) {
+		var  userMail 	= $('#formPickCar').find('[name=" userMail"]').val(),
+            userPhone   = $('#formPickCar').find('[name="userPhone"]').val(),
+            bv      = $('#formPickCar').data('bootstrapValidator');
+
+        switch ($(this).attr('name')) {
+			case ' userMail':
+
+				if ( userMail != '') {
+					bv.enableFieldValidators(' userMail', true).revalidateField(' userMail');
+				}
+
+				if ( userMail === '' && userPhone != '') {
+					bv.enableFieldValidators(' userMail', false).revalidateField('userPhone');
+				}
+
+				if ( userMail === '' && userPhone === '') {
+					bv.enableFieldValidators('userPhone', true).revalidateField('userPhone');
+				}
+
+				if ( userMail != '' && userPhone === '') {
+					bv.enableFieldValidators('userPhone', false).revalidateField('userPhone');
+				}
+
+                break;
+            case 'userPhone':
+
+				if (userPhone != '') {
+					bv.enableFieldValidators('userPhone', true).revalidateField('userPhone');
+				}
+
+				if (userPhone === '' &&  userMail != '') {
+					bv.enableFieldValidators('userPhone', false).revalidateField('userPhone');
+				}
+
+				if (userPhone === '' &&  userMail === '') {
+					bv.enableFieldValidators('userPhone', true).revalidateField('userPhone');
+					bv.enableFieldValidators(' userMail', true).revalidateField(' userMail');
+				}
+
+				if (userPhone != '' &&  userMail === '') {
+					bv.enableFieldValidators(' userMail', false).revalidateField(' userMail');
+				}
+                    
+                break;
+        	default:
+                break;
+        }
+
+	})
+	.find('[name="userPhone"]').mask('+7 (999) 999-99-99').end()
+	.on('success.form.bv', function(e, data) {
+
+        // Prevent form submission
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Some instances you can use are
+        var $form = $(e.target),        // The form instance
+            fv    = $(e.target).data('bootstrapValidator'); // FormValidation instance
+
+        // Do whatever you want here ...
+        $form.bootstrapValidator('disableSubmitButtons', false);
+
+
+        $('#formPickCar').ajaxSubmit({ 
+	        success: function (responseText, statusText, xhr, $form)  { 
+
+	        	$form.resetForm();
+	        	fv.resetForm();
+
+				$('#formSubmit').removeAttr('disabled');
+
+				$('#success_content').html(responseText);
+				$('#formPickCar').hide();
+				$('#success').show();
+				$('#success_btn').focus();
+				
+			},
+	        beforeSubmit:  function () {
+		    	$('#formSubmit').attr('disabled', 'disabled');
+		    },
+	        error:  function (msg) {
+		    	alert('Ошибка при отправке: ' + msg.statusText);
+		    	$('#formSubmit').removeAttr('disabled');
+		    },
+	    });
+
+        return false;
+    });
+	;
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Обратная связь</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
+
+	<style type="text/css">
+
+		@media screen and (max-width: 414px) {
+	    	.col-xxs-12 {
+	    		width: 100%;
+	    	}
+	   	}
+
+		.calendar-sm {
+			margin-top: 10px;
+		}
+
+		.table-sm>tbody>tr>td, 
+		.table-sm>tbody>tr>th, 
+		.table-sm>tfoot>tr>td, 
+		.table-sm>tfoot>tr>th, 
+		.table-sm>thead>tr>td, 
+		.table-sm>thead>tr>th {
+			padding: 4px !important;
+			text-align: center;
+		}
+
+		.change-range {
+			cursor: 	pointer;	
+		}
+
+		.btn-vk
+		{
+			padding: 7px 16px 8px;
+		    margin: 0;
+		    font-size: 12.5px;
+		    display: inline-block;
+		    zoom: 1;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    outline: none;
+		    font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,sans-serif;
+		    vertical-align: top;
+		    line-height: 15px;
+		    text-align: center;
+		    text-decoration: none;
+		    background: none;
+		    background-color: #5e81a8;
+		    color: #fff;
+		    border: 0;
+		    border-radius: 2px;
+		    box-sizing: border-box;
+		}
+
+		.btn-vk:hover,
+		.btn-vk:focus{
+			background-color:#6888ad;
+			text-decoration:none;
+			color: #fff;
+			outline: none !important;
+		}
+
+	</style>
+
+</head>
+<body class="vk-app">
+
+<div id="success" style="display: none;" class="text-center">
+	<div id="success_content" style="margin-bottom: 20px;">
+	</div>
+	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
+</div>
+
+<form method="POST" id="formTestDrive" action="https://www.swedmobil.ru/form-submit">
+
+	<input type="hidden" name="formId" value="">
+
+	<div class="row">
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="name">Имя и Фамилия *</label>
+	    <input type="text" class="form-control" id="name" name="name" placeholder="">
+	    <small>Как к вам обращаться?</small>
+	  </div>
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="email">Ваш e-mail*</label>
+	    <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com">
+	  </div>
+
+	</div>
+
+	<div class="row">
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="phone">Ваш телефон*</label>
+    <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+    <small>+7(777) 777-77-77</small>
+  </div>
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="r_department">Отдел*</label>
+    <select name="r_department" class="form-control" id="r_department">
+    </select>
+  </div>
+
+  </div>
+
+  <div class="row">
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Автоцентр
+</label>
+    <select name="salon" class="form-control">
+    	<option value="0"></option>
+    	<option value="2">Свид-Мобиль на Энергетиков</option>
+    	<option value="1">Свид-Мобиль на М. Жукова</option>
+    	<option value="3">Свид-Мобиль на Приморском</option>
+    </select>
+	<nav id="calendarPagination" style="	display: none;">
+	  <ul class="pager" >
+	    <li class="previous"  ><span class="change-range" data-range="prev" aria-hidden="true">&larr;</span></li>
+	    <li><i style="font-size: 24px;">Доступное время</i></li>
+	    <li class="next" ><span aria-hidden="true" class="change-range" data-range="next">&rarr;</span></li>
+	  </ul>
+	</nav>
+
+    <div id="calendarContainer" class="calendar-sm">
+    </div>
+
+  </div>
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Сообщение:</label>
+	<textarea name="messages" class="form-control" rows="3"></textarea>
+  </div>
+
+  <div class="col-xs-12 form-group">
+     <button type="submit" id="formSubmit" class="btn btn-vk">Отправить</button>
+  </div>
+
+</div>
+
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script src="/bundles/swedmnews/js/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+<script src="/bundles/swedmnews/js/bootstrapvalidator/dist/js/language/ru_RU.js"></script>
+<script src="//oss.maxcdn.com/jquery.mask/1.11.4/jquery.mask.min.js"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	var r_department = $('#r_department');
+
+	var empty_department = $('<option/>')
+		.attr('value', "")
+		.text('Не имеет значения')
+		.appendTo(r_department);
+
+	$.ajax({
+		method: 'get',
+		url: 'https://swedmobil.ru/api/v1/forms-departmens/all',
+		success: function(responseText, statusText, xhr, $form){
+
+			$.each(responseText, function(i, dp) {
+
+				var option = $('<option/>')
+					.text(dp.title)
+					.attr('value', dp.id)
+					.val(dp.id)
+					.appendTo(r_department);
+			})
+
+		},
+		error: function() {
+
+		}
+	})
+
+	VK.init(function() { 
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+    console.log( "swed mobil app ready!" );
+
+	$('#success_btn').on('click', function(){
+		$('#success').hide();
+		$('input[name="dateVisit"]').val( '' ).trigger('change');
+		$('#formTestDrive').show();
+	});
+
+	$('#formTestDrive')
+	.bootstrapValidator({
+		locale: 'ru_RU',
+		fields: {
+			r_department: {
+				validators: {
+                    notEmpty: {
+                        message: 'Укажите Отдел'
+                    }
+                }
+			},
+			name: {
+                validators: {
+                    notEmpty: {
+                        message: 'Укажите Ваше Имя'
+                    }
+                }
+            },
+            email: {
+             	validators: {
+                    notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    }
+                }
+            },
+            phone: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    },
+            	}
+            }
+		}
+	})
+	.on('keyup', '[name="email"], [name="phone"]', function(e) {
+		var email 	= $('#formTestDrive').find('[name="email"]').val(),
+            phone   = $('#formTestDrive').find('[name="phone"]').val(),
+            bv      = $('#formTestDrive').data('bootstrapValidator');
+
+        switch ($(this).attr('name')) {
+			case 'email':
+
+				if (email != '') {
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (email === '' && phone != '') {
+					bv.enableFieldValidators('email', false).revalidateField('phone');
+				}
+
+				if (email === '' && phone === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (email != '' && phone === '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+                break;
+            case 'phone':
+
+				if (phone != '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (phone === '' && email != '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+				if (phone === '' && email === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (phone != '' && email === '') {
+					bv.enableFieldValidators('email', false).revalidateField('email');
+				}
+                    
+                break;
+        	default:
+                break;
+        }
+
+	})
+	.find('[name="phone"]').mask('+7 (999) 999-99-99').end()
+	.on('success.form.bv', function(e, data) {
+
+        // Prevent form submission
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Some instances you can use are
+        var $form = $(e.target),        // The form instance
+            fv    = $(e.target).data('bootstrapValidator'); // FormValidation instance
+
+        // Do whatever you want here ...
+        $form.bootstrapValidator('disableSubmitButtons', false);
+
+
+        $('#formTestDrive').ajaxSubmit({ 
+	        success: function (responseText, statusText, xhr, $form)  { 
+
+	        	$form.resetForm();
+	        	fv.resetForm();
+
+				$('#formSubmit').removeAttr('disabled');
+
+				$('#success_content').html(responseText);
+				$('#formTestDrive').hide();
+				$('#success').show();
+				$('#success_btn').focus();
+				
+			},
+	        beforeSubmit:  function () {
+		    	$('#formSubmit').attr('disabled', 'disabled');
+		    },
+	        error:  function (msg) {
+		    	alert('Ошибка при отправке: ' + msg.statusText);
+		    	$('#formSubmit').removeAttr('disabled');
+		    },
+	    });
+
+        return false;
+    });
+	;
+
+});
+
+</script>
+
+</body>
+</html>

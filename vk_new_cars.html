@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Автомобили в наличии</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css">
+	<link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.carousel.min.css">
+	<link rel="stylesheet" href="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/assets/owl.theme.default.min.css">
+
+
+	<style type="text/css">
+
+
+		.list-group-item.no-border {
+			border: none;
+			padding: 0px 15px;
+		}
+
+		.list-group-item.no-border.cars-photo {
+			padding-top: 10px;
+		}
+
+		.list-group-item.no-border.cars-actions {
+			padding-bottom: 10px;
+			padding-top: 10px;
+		}
+
+		.list-group-item.no-border.cars-title {
+			padding: 5px 15px;
+			font-size: 18px;
+			color: #1b3b55;
+		}
+
+		.list-group-item.no-border.cars-location {
+			padding-top: 10px;
+			font-size: 13px;
+			font-style: italic;
+		}
+
+
+		.list-group.border {
+			border: 1px solid #ddd;
+		}
+
+
+
+		/*carsshow*/
+
+		.carsshow-title {
+			padding-top: 15px;
+			font-size: 30px;
+			color: #1b3b55;
+			font-weight: 700;
+			text-transform: uppercase;
+		}
+
+		.carsshow-subtitle {
+			font-size: 20px;
+		}
+
+		.carsshow-price {
+			padding-top: 10px;
+			font-size: 30px;
+		}
+
+		.list-group-item.no-border.carsshow-item {
+			padding: 2px 15px;
+			font-size: 13px;
+		}
+
+		.list-group-item.no-border.carsshow-item b {
+			font-size: 14px;
+		}
+
+		.list-group-item.no-border.carsshow-number {
+			padding-top: 10px;
+		}
+
+		.list-group-item.no-border.carsshow-phone {
+			border-bottom: 1px solid #ddd;
+			padding-bottom: 10px;
+		}
+
+
+
+		.carsshow-options {
+			border-left: none;
+			border-right: none;
+			border-bottom: none;
+		}
+
+		#success {
+			margin-top: 50px; 
+		}
+
+		@media screen and (max-width: 414px) {
+	    	.col-xxs-12 {
+	    		width: 100%;
+	    	}
+	   	}
+
+		.btn-vk
+		{
+			padding: 7px 16px 8px;
+		    margin: 0;
+		    font-size: 12.5px;
+		    display: inline-block;
+		    zoom: 1;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    outline: none;
+		    font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,sans-serif;
+		    vertical-align: top;
+		    line-height: 15px;
+		    text-align: center;
+		    text-decoration: none;
+		    background: none;
+		    background-color: #5e81a8;
+		    color: #fff;
+		    border: 0;
+		    border-radius: 2px;
+		    box-sizing: border-box;
+		}
+
+		.btn-vk:hover,
+		.btn-vk:focus{
+			background-color:#6888ad;
+			text-decoration:none;
+			color: #fff;
+			outline: none !important;
+		}
+
+		.carsshow-table {
+			margin-top: 10px;
+		}
+
+	</style>
+
+</head>
+<body class="vk-app">
+
+<!-- btn back -->
+<div class="btnback" id="btnback" style="padding-top: 10px; display: none;">
+	<a href="#" class="btn btn-vk " onclick="javascript:window.history.back();"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp;Назад</a>
+	<hr style="margin: 0; margin-top: 5px;">
+</div>
+<!-- /btn back -->
+
+<div id="success" style="display: none;" class="text-center">
+	<div id="success_content" style="margin-bottom: 20px;">
+	</div>
+	<button class="btn btn-vk" id="success_btn" onclick="javascript:window.history.back();">Вернуться назад</button>
+</div>
+
+<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit" style="padding-top: 10px; display: none;">
+
+	<input type="hidden" name="formId" value="51">
+
+	<div class="row">
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="name">Имя и Фамилия *</label>
+	    <input type="text" class="form-control" id="name" name="name" placeholder="">
+	    <small>Как к вам обращаться?</small>
+	  </div>
+
+	  <div class="col-xs-6 col-xxs-12 form-group">
+	    <label class=" control-label" for="email">Ваш e-mail*</label>
+	    <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com">
+	  </div>
+
+	</div>
+
+	<div class="row">
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="phone">Ваш телефон*</label>
+    <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+    <small>+7(777) 777-77-77</small>
+  </div>
+
+  <div class="col-xs-6 col-xxs-12 form-group">
+    <label class=" control-label" for="r_department">Отдел*</label>
+    <select name="r_department" class="form-control" id="r_department">
+    </select>
+  </div>
+
+  </div>
+
+  <div class="row">
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Автоцентр
+</label>
+    <select name="salon" class="form-control">
+    	<option value="0"></option>
+    	<option value="2">Свид-Мобиль на Энергетиков</option>
+    	<option value="1">Свид-Мобиль на М. Жукова</option>
+    	<option value="3">Свид-Мобиль на Приморском</option>
+    </select>
+	<nav id="calendarPagination" style="	display: none;">
+	  <ul class="pager" >
+	    <li class="previous"  ><span class="change-range" data-range="prev" aria-hidden="true">&larr;</span></li>
+	    <li><i style="font-size: 24px;">Доступное время</i></li>
+	    <li class="next" ><span aria-hidden="true" class="change-range" data-range="next">&rarr;</span></li>
+	  </ul>
+	</nav>
+
+    <div id="calendarContainer" class="calendar-sm">
+    </div>
+
+  </div>
+
+  <div class="col-xs-12 form-group">
+    <label class=" control-label" for="car">Сообщение:</label>
+	<textarea name="messages" class="form-control" rows="5"></textarea>
+  </div>
+
+  <div class="col-xs-12 form-group">
+     <button type="submit" id="formSubmit" class="btn btn-vk">Отправить</button>
+  </div>
+
+</div>
+
+</form>
+
+<div class="cars" style="padding-top: 10px;">
+	<div class="cars-content"></div>
+	<div class="cars-pagination">
+
+	<nav>
+	  <ul class="pagination">
+	  </ul>
+	</nav>
+	</div>
+</div>
+
+<div class="carsshow" style="padding-top: 10px;">
+
+</div>
+
+<div class="accsshow" style="padding-top: 10px;">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/dist/js/language/ru_RU.js"></script>
+<script src="//oss.maxcdn.com/jquery.mask/1.11.4/jquery.mask.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+<script src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	console.log( "swed mobil app ready!" );
+
+	function adjustIframeHeight() {
+		VK.callMethod("resizeWindow", null, $('.vk-app').height() + 20);
+    }
+
+	VK.init(function() { 
+
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+	var r_department = $('#r_department');
+
+	var empty_department = $('<option/>')
+		.attr('value', "")
+		.text('Не имеет значения')
+		.appendTo(r_department);
+
+	$.ajax({
+		method: 'get',
+		url: 'https://swedmobil.ru/api/v1/forms-departmens/all',
+		success: function(responseText, statusText, xhr, $form){
+
+			$.each(responseText, function(i, dp) {
+
+				var option = $('<option/>')
+					.text(dp.title)
+					.attr('value', dp.id)
+					.val(dp.id)
+					.appendTo(r_department);
+			})
+
+		},
+		error: function() {
+
+		}
+	})
+
+    var $cars = $('.cars'),
+    	$carsContent = $('.cars-content'),
+    	$carsshow = $('.carsshow'),
+    	$accsshow = $('.carsshow'),
+    	totalCars = 0,
+    	newCarsCount = 0
+    	countCats = 6;
+
+    getShortCount();
+
+    $('.pagination').on('click', 'a', function (event) {
+
+    	$('.pagination').find('li.active').removeClass('active');
+    	$(event.target).closest('li').addClass('active');
+
+    	getCars(countCats, ($(event.target).text() - 1) * countCats);
+    });
+
+	window.onpopstate = function(event) {
+
+		var state = event.state;
+
+		if (state != null)
+		{
+			if (state.type == 'page') {
+				$carsshow.hide();
+				$cars.show();
+
+				$('.btnback').hide();
+
+				VK.callMethod('resizeWindow', null, $('.vk-app').height() + 150);
+				VK.callMethod('scrollWindow', 0);
+			}
+
+			if (state.type == 'show') {
+				$accsshow.show();
+		    	$cars.hide();
+		    	$('#formFeedback').hide();
+		    	// getCarInfo(state.uid);
+
+		    	$('.btnback').show();
+		    	$('#success').hide();
+
+		    	VK.callMethod('resizeWindow', null, $('.vk-app').height() + $('#options').height() + 150);
+				VK.callMethod('scrollWindow', 0);
+			}
+		}
+
+	};
+
+    $carsContent.on('click', '.carsShow', function (event) {
+    	window.history.replaceState({type: 'page', page: $('.pagination').find('li.active a').text()}, '');
+    	window.history.pushState({type: 'show', 'uid' : $(event.target).data('uid')}, '');
+
+    	$cars.hide();
+
+    	getCarInfo($(event.target).data('uid'));
+
+    	$('.btnback').show();
+
+    });
+
+    $(document).on('click', '.btnfeedback', function (event) {
+
+    	window.history.pushState({type: 'feedback'}, '');
+
+		var button = $(event.target)
+		var title = button.data('title') 
+		var id = button.data('id') 
+		var year = button.data('year') 
+		var modification = button.data('modification') 
+		var make = button.data('make') 
+		var model = button.data('model') 
+		var location = button.data('location') 
+		var vin = button.data('vin') 
+		var type = button.data('type') 
+
+		switch(type) {
+			case 'ticket':
+
+				$('textarea[name="messages"]').val(
+					'Добрый день \n'+
+					'Меня интересует '+make+' '+model+' '+modification+' - '+year+' года выпуска под кодом - '+vin+'.\n'+
+					'Свяжитесь со мной в ближайшее время'
+				);
+
+				$('select[name="r_department"]').val(10);
+				$('select[name="salon"]').val(location);
+
+				break;
+			case 'credit':
+
+				$('textarea[name="messages"]').val(
+					'Добрый день \n'+
+					'Меня интересует кредитный расчет '+make+' '+model+' '+modification+' - '+year+' года выпуска под кодом - '+vin+'.\n'+
+					'Свяжитесь со мной в ближайшее время'
+				);
+
+				$('select[name="r_department"]').val(22);
+				$('select[name="salon"]').val(location);
+
+				break;
+			case 'insurance':
+
+				$('textarea[name="messages"]').val(
+					'Добрый день \n'+
+					'Меня интересует расчет КАСКО/ОСАГО для '+make+' '+model+' '+modification+' - '+year+' года выпуска под кодом - '+vin+'.\n'+
+					'Свяжитесь со мной в ближайшее время'
+				);
+
+				$('select[name="r_department"]').val(22);
+				$('select[name="salon"]').val(location);
+
+				break;
+			case 'booking':
+
+				$('textarea[name="messages"]').val(
+					'Добрый день \n'+
+					'Меня заинтересовал '+make+' '+model+' '+modification+' - '+year+' года выпуска под кодом - '+vin+'.\n'+
+					'Я хочу получить индивидуальное предложение на данный автомобиль, свяжитесь со мной в ближайшее время.'
+				);
+
+				$('select[name="r_department"]').val(10);
+				$('select[name="salon"]').val(location);
+
+				break;	
+
+			case 'accessors':
+
+				$('textarea[name="messages"]').val(
+					'Добрый день \n'+
+					'Меня заинтересовало ваше предложение по доп. оборудованию '+title+' под кодом - '+id+'.\n'+
+					'Свяжитесь со мной в ближайшее время.'
+				);
+
+				$('select[name="r_department"]').val(12);
+				$('select[name="salon"]').val(location);
+
+				break;
+
+			default:
+
+				$('textarea[name="messages"]').val('');
+				$('select[name="r_department"]').val('');
+				$('select[name="salon"]').val('');
+
+				break;
+		}
+
+
+		$carsshow.hide();
+		$('#formFeedback').show();
+
+		VK.callMethod('resizeWindow', null, $('.vk-app').height() + 150);
+		VK.callMethod('scrollWindow', 0);
+
+    })
+
+    $(document).on('click', '.accessorsShow', function (event) {
+
+    	window.history.pushState({type: 'acss'}, '');
+
+     	$carsshow.empty();
+     	showAccessor(
+     		$(event.target).data('id'),
+     		$(event.target).data('title'),
+     		$(event.target).data('number1c'),
+     		$(event.target).data('info'),
+     		$(event.target).data('photo'),
+     		$(event.target).data('photogallery'),
+     		$(event.target).data('photosqare'),
+     		$(event.target).data('price'),
+     		$(event.target).data('showoperationprice'),
+     		$(event.target).data('priceoperation')
+     	);
+
+    });
+
+    function showAccessor(id, title, number1c, info, photo, photoGallery, photoSqare, price, showOperationPrice, priceOperation) {
+
+    	$('<h4 />')
+    		.text(title)
+    		.appendTo($accsshow);
+
+		var $imgwrap = $('<div />')
+			.addClass('text-center')
+			.appendTo($accsshow);
+
+    	$('<img />')
+    		.attr('src', photoSqare)
+    		.appendTo($imgwrap);
+
+    	if (info != "") {
+
+	    	$('<p />')
+	    		.attr('style', 'padding-top: 10px;')
+	    		.text(info)
+	    		.appendTo($accsshow);
+    	}
+
+		var $btnwrap = $('<div />')
+			.attr('style', 'padding-top: 10px;')
+			.addClass('text-center')
+			.appendTo($accsshow);
+
+		var $btn = $('<a />')
+			.addClass('btn btn-vk ')
+			.text('Оставить заявку')
+			.attr('data-toggle', 'modal')
+			.attr('data-target', '#feedback')
+			.appendTo($btnwrap);
+    };
+
+    function getCarInfo(uid) {
+
+    	$carsshow.empty();
+    	$carsshow.show();
+
+  		// get cars info
+  		$.ajax({
+  			method: 'get',
+  			url: 'https://swedmobil.ru/api/v1/newcars/' + uid + '/show',
+  			success: function(responseText, statusText, xhr, $form){
+
+				// button feedback
+
+				var $rowbtncarshow = $('<div />')
+					.addClass('row')
+					.appendTo($carsshow);
+
+				var $col1btncarshow = $('<div />')
+					.addClass('col-xs-6')
+					.appendTo($rowbtncarshow);
+
+				var $col2btncarshow = $('<div />')
+					.addClass('col-xs-6')
+					.appendTo($rowbtncarshow);
+
+				var $btnwrap = $('<div />')
+					.attr('style', 'padding-top: 10px;')
+					.addClass('text-center')
+					.appendTo($col1btncarshow);
+
+				$('<a />')
+					.addClass('btn btn-vk btn-block btnfeedback')
+					.text('Оставить заявку')
+					.attr('data-type', 'ticket')
+					.attr('data-year', responseText.Year)
+					.attr('data-modification', responseText.Modification)
+					.attr('data-make', responseText.Make)
+					.attr('data-model', responseText.Model)
+					.attr('data-location', responseText.LocationOld)
+					.attr('data-vin', responseText.Vin)
+					.appendTo($btnwrap);
+
+				var $btnwrap = $('<div />')
+					.attr('style', 'padding-top: 10px;')
+					.addClass('text-center')
+					.appendTo($col1btncarshow);
+
+				$('<a />')
+					.addClass('btn btn-vk btn-block btnfeedback')
+					.text('Расчитать страховку')
+					.attr('data-type', 'insurance')
+					.attr('data-year', responseText.Year)
+					.attr('data-modification', responseText.Modification)
+					.attr('data-make', responseText.Make)
+					.attr('data-model', responseText.Model)
+					.attr('data-location', responseText.LocationOld)
+					.attr('data-vin', responseText.Vin)
+					.appendTo($btnwrap);
+
+				var $btnwrap = $('<div />')
+					.attr('style', 'padding-top: 10px;')
+					.addClass('text-center')
+					.appendTo($col2btncarshow);
+
+				$('<a />')
+					.addClass('btn btn-vk btn-block btnfeedback')
+					.text('Расчитать кредит')
+					.attr('data-type', 'credit')
+					.attr('data-year', responseText.Year)
+					.attr('data-modification', responseText.Modification)
+					.attr('data-make', responseText.Make)
+					.attr('data-model', responseText.Model)
+					.attr('data-location', responseText.LocationOld)
+					.attr('data-vin', responseText.Vin)
+					.appendTo($btnwrap);
+
+				var $btnwrap = $('<div />')
+					.attr('style', 'padding-top: 10px;')
+					.addClass('text-center')
+					.appendTo($col2btncarshow);
+
+				$('<a />')
+					.addClass('btn btn-vk btn-block btnfeedback')
+					.text('Получить индивидуальное предложение')
+					.attr('data-type', 'booking')
+					.attr('data-year', responseText.Year)
+					.attr('data-modification', responseText.Modification)
+					.attr('data-make', responseText.Make)
+					.attr('data-model', responseText.Model)
+					.attr('data-location', responseText.LocationOld)
+					.attr('data-vin', responseText.Vin)
+					.appendTo($btnwrap);
+
+  				// fotos
+
+
+				$('<div class="carsshow-title">' + responseText.Make + ' ' + responseText.Model + '</div>' )
+					.appendTo($carsshow);
+
+				$('<div class="carsshow-subtitle">' + responseText.Modification + '</div>' )
+					.appendTo($carsshow);
+
+  				var $fotorama = $('<div />')
+  					.attr('style', 'padding-top: 10px;')
+  					.addClass('fotorama')
+  					.attr('data-nav', 'thumbs')
+  					.appendTo($carsshow);
+
+				var photos = [];
+
+  				$.each(responseText.Photos, function (i, photo) {
+  					photos.push( {img: photo, thumb: photo} );
+  				});
+
+  				$fotorama.fotorama({
+				    data: photos
+				});
+
+				// price
+
+				if (responseText.NewPrice < responseText.Price)
+				{
+
+					$('<div class="row"><div class="col-xs-6 col-xxs-12 "><b class="text-danger carsshow-price"><del>'+ $.number( responseText.Price, 0, '.', ' ' ) +'  руб.</del></b></div><div class="col-xs-6 col-xxs-12 text-right"><b class="carsshow-price">' + $.number( responseText.NewPrice, 0, '.', ' ' )  +' руб.</b></div></div>').appendTo($carsshow);
+
+				}
+				else
+				{
+					$('<div class="text-right carsshow-price"><b>' + $.number( responseText.Price, 0, '.', ' ' )  +' руб.</b></div>' )
+					.appendTo($carsshow);
+				}
+
+
+  				// car info
+  				var $ul = $('<ul />')
+					.addClass('list-group border carsshow-table')
+					.appendTo($carsshow);
+
+				// // make and mark
+				// $('<li />')
+				// 	.addClass('list-group-item no-border')
+				// 	.html('<b>' + responseText.Make + ' ' + responseText.Model + '</b> ' + responseText.Modification)
+				// 	.appendTo($ul);
+
+				// number
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item carsshow-number')
+					.html('<b>Номер авто: </b>' + responseText.Vin)
+					.appendTo($ul);
+
+				// kpp
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Кпп: </b>' + responseText.TransmissionShort)
+					.appendTo($ul);
+
+				// status
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Статус: </b>' + responseText.DeliveryStatus)
+					.appendTo($ul);	
+
+				// engine value
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Объем: </b>' + responseText.EngineSize)
+					.appendTo($ul);	
+
+				// driver
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Привод: </b>' + responseText.GearType)
+					.appendTo($ul);	
+
+				// color
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Цвет: </b>' + responseText.Color)
+					.appendTo($ul);	
+
+				// // price
+				// var $liprice = $('<li />')
+				// 	.addClass('list-group-item no-border')
+				// 	.appendTo($ul);
+
+				// if (responseText.NewPrice < responseText.Price)
+				// {
+				// 	$liprice.html('Цена: <b>'+ responseText.NewPrice.toLocaleString() +' руб.</b><b class="text-danger"><del>'+ responseText.Price.toLocaleString() +'  руб.</del></b>');
+				// }
+				// else
+				// {
+				// 	$liprice.html('Цена: <b>'+ responseText.Price.toLocaleString() +' руб.</b>' );
+				// }
+
+				// location
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item')
+					.html('<b>Автосалон: </b>' + responseText.Location)
+					.appendTo($ul);
+
+				// phone
+				$('<li />')
+					.addClass('list-group-item no-border carsshow-item carsshow-phone')
+					.html('<b>+7(812) 303-85-85</b>')
+					.appendTo($ul);
+
+				// options
+				var $options = $('<li />')
+					.addClass('list-group-item carsshow-options')
+					.attr('id', 'options')
+					.appendTo($ul);
+
+				$.each(responseText.Options, function (i, option) {
+
+					if (option.name) {
+
+
+						if (i != 0) {
+
+							$('<hr />')
+								.attr('style', 'margin-top: 5px; margin-bottom: 5px;')
+								.appendTo($options);
+
+						}
+
+						$('<p />')
+							.attr('style', 'font-weight: 700; margin-bottom: 5px;')
+							.text(option.name)
+							.appendTo($options);
+					}
+
+					$.each(option.items, function (i, item) {
+
+
+
+						$('<p />')
+							.attr('style', 'padding-left: 5px; margin-bottom: 3px; font-size: 13px;')
+							.text(item)
+							.appendTo($options);
+
+					});
+
+				});
+
+				// Accessors
+
+				$('<h4 />')
+					.attr('style', 'text-transform: uppercase; font-size: 14px; margin-bottom: 0px; ')
+					.text('Доп. Оборудование')
+					.appendTo($carsshow);
+
+				$('<hr />')
+					.attr('style', 'margin-top: 5px; ')
+					.appendTo($carsshow);
+
+				var $accessors = $('<div />')
+					.addClass('owl-carousel owl-theme')
+					.appendTo($carsshow);
+
+				$.each(responseText.Accessors, function (i, accessor) {
+					$.each(accessor.items, function (i, item) {
+
+						var $item = $('<div />')
+							.addClass('item')
+							.appendTo($accessors);
+
+						$('<b />')
+							.attr('style', 'height: 80px; display: block;')
+							.text(item.Title)
+							.appendTo($item);
+
+						$('<img />')
+							.attr('style', 'padding: 5px; ')
+							.attr('src', item.PhotoSqare)
+							.appendTo($item);
+
+						var $btnwrapper = $('<div />')
+							.attr('style', 'padding-top: 10px;')
+							.addClass('text-center')
+							.appendTo($item);
+
+						$('<a />')
+							.attr('data-type', 'accessors')
+							.attr('data-id', item.Id)
+							.attr('data-title', item.Title)
+							.attr('data-number1c', item.Number1c)
+							.attr('data-info', item.Info)
+							.attr('data-photo', item.Photo)
+							.attr('data-photogallery', item.PhotoGallery)
+							.attr('data-photosqare', item.PhotoSqare)
+							.attr('data-price', item.Price)
+							.attr('data-showoperationprice', item.ShowOperationPrice)
+							.attr('data-priceoperation', item.PriceOperation)
+							.attr('data-location', responseText.LocationOld)
+							.addClass('btn btn-vk btnfeedback')
+							.text('Оставить заявку')
+							.appendTo($btnwrapper);
+					});
+				});
+
+				$('.owl-carousel').owlCarousel({
+					navText: ['назад', 'вперед'],
+				    loop:true,
+				    margin:10,
+				    nav:true,
+				    dots:1,
+				    pagination: true,
+				    responsive:{
+				        0:{
+				            items:1
+				        },
+				        600:{
+				            items:3
+				        },
+				        1000:{
+				            items:5
+				        }
+				    }
+				});
+
+				// adjustIframeHeight();
+
+				VK.callMethod('resizeWindow', null, 1600 + $('#options').height() + 150 );
+				VK.callMethod('scrollWindow', 0);
+
+
+  			},
+  			error: function() {
+
+			}
+  		});    	
+    };
+
+    function renderPages(countCats = 10, newCarsCount = 0) {
+    	
+    	var countPages = 0;
+    	countPages = (newCarsCount % countCats) > 0 ? (((newCarsCount - newCarsCount % countCats) / countCats) + 1) : ((newCarsCount - newCarsCount % countCats) / countCats);
+
+    	if (countPages > 0) {
+
+    		var $pagination = $('.pagination');
+
+	    	for (var i = 0; i < countPages; i++) {
+	    		var $li = $('<li />')
+	    			.appendTo($pagination);
+
+	    		if (i == 0) {
+	    			$li.addClass('active');
+	    		}
+
+	    		$('<a />')
+	    			.attr('href', '#')
+	    			.text(i+1)
+	    			.appendTo($li);
+	    	}
+
+    	}
+
+    }
+
+    function getShortCount() {
+    	 $.ajax({
+			method: 'get',
+			url: 'https://swedmobil.ru/api/v1/short-count',
+			success: function(responseText, statusText, xhr, $form){
+				newCarsCount = responseText.newCarsCount;
+				getCars(countCats, totalCars);
+				renderPages(countCats, newCarsCount);
+			},
+			error: function() {
+
+			} 
+		});
+    }
+
+    function getCars(limit = 6, offset = 0) {
+
+    	$carsContent.empty();
+
+	    $.ajax({
+			method: 'get',
+			url: 'https://swedmobil.ru/api/v1/newcars?limit=' + limit + '&offset=' + offset,
+			success: function(responseText, statusText, xhr, $form){
+
+				totalCars = totalCars + responseText.length;
+
+				var colCount = 0,
+					$row;
+
+				$.each(responseText, function(i, dp) {
+
+					if (colCount == 0) {
+						$row = $('<div />')
+							.addClass('row')
+							.appendTo($carsContent);
+					}
+
+					var $col = $('<div />')
+						.addClass('col-xs-6')
+						.appendTo($row);
+
+					var $ul = $('<ul />')
+						.addClass('list-group border')
+						.appendTo($col);
+
+					// img
+
+					var $li_img = $('<li />')
+						.addClass('list-group-item no-border cars-photo')
+						.css('min-height', '186px')
+						.appendTo($ul);
+
+					var $img = $('<img />')
+						.attr('data-uid', dp.Uid)
+						.attr('src', dp.Photo)
+						.css('cursor', 'pointer')
+						.addClass('carsShow')
+						.css('max-width', '100%')
+						.appendTo($li_img);
+
+					// short info 
+
+					// var $li_mark = $('<li />')
+					// 	.addClass('list-group-item no-border cars-title')
+					// 	.html('<b>' + dp.Model + ' ' + dp.Year + ' ' + dp.Modification + ' ' + dp.TransmissionShort + '</b>')
+					// 	.appendTo($ul);
+
+					var $li_mark = $('<li />')
+						.addClass('list-group-item no-border cars-title text-center')
+						.html('<b>VOLVO ' + dp.Model + ' - ' + $.number( dp.Price, 0, '.', ' ' )  + ' руб.</b>')
+						.appendTo($ul);
+
+
+					// modification
+					var $li_modif = $('<li />')
+						.addClass('list-group-item no-border cars-modif text-center')
+						.html( dp.Modification)
+						.appendTo($ul);
+
+					// year
+					var $li_year = $('<li />')
+						.addClass('list-group-item no-border cars-year text-center')
+						.html('Год выпуска: ' + dp.Year)
+						.appendTo($ul);
+
+					// kpp
+					var $li_kpp = $('<li />')
+						.addClass('list-group-item no-border cars-kpp text-center')
+						.html('КПП: ' + dp.TransmissionShort)
+						.appendTo($ul);
+
+					// number
+
+					var $li_number = $('<li />')
+						.addClass('list-group-item no-border cars-number text-center')
+						.html('Номер авто: ' +dp.Vin)
+						.appendTo($ul);
+
+					// location
+
+					var $li_location = $('<li />')
+						.addClass('list-group-item no-border cars-location text-center')
+						.appendTo($ul);
+
+					if (dp.Location == 0) {
+						$li_location.text('Поступит: ' + dp.DeliveryStatus);
+					} else {
+						$li_location.text(dp.Location);
+					}
+
+					// // number
+					// var $li_number = $('<li />')
+					// 	.addClass('list-group-item no-border cars-number')
+					// 	.html('<span class="badge" style="background: ' + (dp.DeliveryStatus === 'На складе' ? '#468847' : '#3a87ad') + ';">'+dp.DeliveryStatus +'</span>' + ' ' + dp.Vin)
+					// 	.appendTo($ul);
+
+					// 
+
+					// btn
+
+					var $li_btn = $('<li />')
+						.addClass('list-group-item no-border cars-actions')
+						.appendTo($ul);
+
+					var $btn = $('<a />')
+						.attr('data-uid', dp.Uid)
+						.addClass('btn btn-vk carsShow btn-block')
+						.text('Подробнее')
+						.appendTo($li_btn);
+
+					colCount = colCount + 1;
+
+					if (colCount == 2) {
+						colCount = 0;
+					}
+
+				});
+
+
+				VK.callMethod('resizeWindow', null, 1345 );
+				VK.callMethod('scrollWindow', 0);
+
+			},
+			error: function() {
+
+			}
+		});
+    }
+
+$('#formFeedback')
+	.bootstrapValidator({
+		locale: 'ru_RU',
+		fields: {
+			r_department: {
+				validators: {
+                    notEmpty: {
+                        message: 'Укажите Отдел'
+                    }
+                }
+			},
+			name: {
+                validators: {
+                    notEmpty: {
+                        message: 'Укажите Ваше Имя'
+                    }
+                }
+            },
+            email: {
+             	validators: {
+                    notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    }
+                }
+            },
+            phone: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    },
+            	}
+            }
+		}
+	})
+	.on('keyup', '[name="email"], [name="phone"]', function(e) {
+		var email 	= $('#formFeedback').find('[name="email"]').val(),
+            phone   = $('#formFeedback').find('[name="phone"]').val(),
+            bv      = $('#formFeedback').data('bootstrapValidator');
+
+        switch ($(this).attr('name')) {
+			case 'email':
+
+				if (email != '') {
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (email === '' && phone != '') {
+					bv.enableFieldValidators('email', false).revalidateField('phone');
+				}
+
+				if (email === '' && phone === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (email != '' && phone === '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+                break;
+            case 'phone':
+
+				if (phone != '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (phone === '' && email != '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+				if (phone === '' && email === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (phone != '' && email === '') {
+					bv.enableFieldValidators('email', false).revalidateField('email');
+				}
+                    
+                break;
+        	default:
+                break;
+        }
+
+	})
+	.find('[name="phone"]').mask('+7 (999) 999-99-99').end()
+	.on('success.form.bv', function(e, data) {
+
+        // Prevent form submission
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Some instances you can use are
+        var $form = $(e.target),        // The form instance
+            fv    = $(e.target).data('bootstrapValidator'); // FormValidation instance
+
+        // Do whatever you want here ...
+        $form.bootstrapValidator('disableSubmitButtons', false);
+
+
+        $('#formFeedback').ajaxSubmit({ 
+	        success: function (responseText, statusText, xhr, $form)  { 
+
+	        	$form.resetForm();
+	        	fv.resetForm();
+
+				$('#formSubmit').removeAttr('disabled');
+
+				$('#success_content').html(responseText);
+				$('#formFeedback').hide();
+				$('#success').show();
+				$('#success_btn').focus();
+				
+			},
+	        beforeSubmit:  function () {
+		    	$('#formSubmit').attr('disabled', 'disabled');
+		    },
+	        error:  function (msg) {
+		    	alert('Ошибка при отправке: ' + msg.statusText);
+		    	$('#formSubmit').removeAttr('disabled');
+		    },
+	    });
+
+        return false;
+    });
+	;
+
+
+});
+
+</script>
+</body>
+</html>

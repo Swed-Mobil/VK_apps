@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+	<title>Оценить автомобиль</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/css/formValidation.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+	<style type="text/css">
+
+		.checkbox.c-personal {
+			color: #333 !important;
+		}
+
+		#input-sell-arrow {
+			width: 130px;
+		}
+
+		#sell-arrow {
+			text-align: center;
+		}
+
+		.radio .checkbox {
+			padding-left: 20px;
+		}
+
+		#formEvaluateVehicle .nav>li>a{
+			padding: 5px 10px;
+		}
+
+		#formEvaluateVehicle {
+			padding: 10px;
+		}
+
+		#formEvaluateVehicle .tab-content {
+    		margin-top: 20px;
+		}
+
+		#year-slider, #race-slider, #volume-engine-slider, #volume-power-slider {
+			margin-bottom: 10px;
+		}
+
+		#year-release, #race-release, #volume-engine, #volume-power  {
+			width: 100px;
+		    text-align: center;
+		    margin: 0 auto;
+		}
+
+		@media screen and (max-width: 414px) {
+	    	.col-xxs-12 {
+	    		width: 100%;
+	    	}
+	   	}
+
+		.calendar-sm {
+			margin-top: 10px;
+		}
+
+		.table-sm>tbody>tr>td, 
+		.table-sm>tbody>tr>th, 
+		.table-sm>tfoot>tr>td, 
+		.table-sm>tfoot>tr>th, 
+		.table-sm>thead>tr>td, 
+		.table-sm>thead>tr>th {
+			padding: 4px !important;
+			text-align: center;
+		}
+
+		.change-range {
+			cursor: 	pointer;	
+		}
+
+		.btn-vk
+		{
+			padding: 7px 16px 8px;
+		    margin: 0;
+		    font-size: 12.5px;
+		    display: inline-block;
+		    zoom: 1;
+		    cursor: pointer;
+		    white-space: nowrap;
+		    outline: none;
+		    font-family: -apple-system,BlinkMacSystemFont,Roboto,Open Sans,Helvetica Neue,sans-serif;
+		    vertical-align: top;
+		    line-height: 15px;
+		    text-align: center;
+		    text-decoration: none;
+		    background: none;
+		    background-color: #5e81a8;
+		    color: #fff;
+		    border: 0;
+		    border-radius: 2px;
+		    box-sizing: border-box;
+		}
+
+		.btn-vk:hover,
+		.btn-vk:focus{
+			background-color:#6888ad;
+			text-decoration:none;
+			color: #fff;
+			outline: none !important;
+		}
+
+	</style>
+
+</head>
+<body class="vk-app">
+
+<div id="success" style="display: none;" class="text-center">
+	<div id="success_content" style="margin-bottom: 20px;">
+	</div>
+	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
+</div>
+
+<form method="POST" id="formEvaluateVehicle" action="https://www.swedmobil.ru/form-submit">
+
+	<input type="hidden" name="formId" value="35">
+
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#step1-tab" data-toggle="tab">1. Автомобиль</a></li>
+        <li><a href="#step2-tab" data-toggle="tab">2. Дополнительно</a></li>
+        <li><a href="#step3-tab" data-toggle="tab">3. Комплектация</a></li>
+        <li><a href="#step4-tab" data-toggle="tab">4. Персональные данные</a></li>
+    </ul>
+
+    <div class="tab-content">
+
+    	<div class="tab-pane active" id="step1-tab">
+
+			<div class="row">
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="mark">Марка *</label>
+			    <input type="hidden" name="realMarka">
+			    <select name="mark" class="form-control" id="mark"></select>
+			  </div>
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="model">Модель *</label>
+			    <input type="hidden" name="realModel">
+			    <select name="model" name="model" class="form-control" id="model" disabled="disabled"></select>
+			    <small class="small-model">Необходимо выбрать марку</small>
+			  </div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Привод</label>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="drive" value="Передний">
+					      Передний
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="drive" value="Задний">
+					      Задний
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="drive" value="Полный">
+					      Полный
+					    </label>
+					</div>
+				</div>
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Коробка передач</label>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="kpp" value="Автоматическая">
+					      Автоматическая
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="kpp" value="Механическая">
+					      Механическая
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="kpp" value="Роботизированная">
+					      Роботизированная
+					    </label>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Год выпуска, г</label>
+
+					<div id="year-slider" class="form-control"></div>
+					<input type="text" id="year-release" name="carAge" class="form-control" autocomplete="off">
+
+				</div>
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Пробег, км</label>
+
+					<div id="race-slider" class="form-control"></div>
+					<input type="text" id="race-release" name="carRace" class="form-control" autocomplete="off">
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Двигатель</label>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="engine" value="Бензин">
+					      Бензин
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="engine" value="Дизель">
+					      Дизель
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="engine" value="Гибридный">
+					      Гибридный
+					    </label>
+					</div>
+				</div>
+
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label" for="">Кузов</label>
+					<select name="realBody" class="form-control">
+				    	<option value=""></option>
+				    	<option value="Седан">Седан</option>
+				    	<option value="Хечбэк">Хечбэк</option>
+				    	<option value="Купе">Купе</option>
+				    	<option value="Универсал">Универсал</option>
+				    	<option value="Минивен">Минивен</option>
+				    	<option value="Внедорожник">Внедорожник</option>
+				    	<option value="Пикап">Пикап</option>
+				    	<option value="Кабриолет">Кабриолет</option>
+				    </select>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+
+					<label class=" control-label">Объем двигателя, л</label>
+
+					<div id="volume-engine-slider" class="form-control"></div>
+					<input type="text" id="volume-engine" name="volumeEngine" class="form-control" autocomplete="off">
+
+				</div>
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+
+					<label class=" control-label">Мощность, л.с.</label>
+
+					<div id="volume-power-slider" class="form-control"></div>
+					<input type="text" id="volume-power" name="volumePower" class="form-control" autocomplete="off">
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="tab-pane" id="step2-tab">
+
+			<div class="row">
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class=" control-label">Владельцев по ПТС</label>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="owner" value="Один">
+					      Один
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="owner" value="Два">
+					      Два
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="owner" value="Три и более">
+					      Три и более
+					    </label>
+					</div>
+				</div>
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class=" control-label">Количество ключей</label>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="keys" value="Один">
+					      Один
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="keys" value="Два">
+					      Два
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="keys" value="Три и более">
+					      Три и более
+					    </label>
+					</div>
+				</div>
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class=" control-label">Состояние</label>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="state" value="Отличное">
+					      Отличное
+					    </label>
+					</div>
+	    			<div class="radio">
+					    <label>
+					      <input type="radio" name="state" value="Хорошее">
+					      Хорошее
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="state" value="Требует ремонта">
+					      Требует ремонта
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="state" value="Аварийное">
+					      Аварийное
+					    </label>
+					</div>					
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Приобретен</label>
+
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="buy" value="У официального дилера">
+					      У официального дилера
+					    </label>
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="buy" value="На вторичном рынке">
+					      На вторичном рынке
+					    </label>
+
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="buyOption[]" value="Ввезен из-за границы">
+						      Ввезен из-за границы
+						    </label>
+						</div>	
+
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="buyOption[]" value="Приобретен в кредит">
+						      Приобретен в кредит
+						    </label>
+						</div>
+
+						<div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="buyOption[]" value="За наличный расчет">
+						      За наличный расчет
+						    </label>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="col-xs-6 col-xxs-12 form-group">
+					<label class=" control-label">Обслуживание и ремонт</label>
+
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="repair" value="Регулярноый ТО у официального дилера">
+					      Регулярноый ТО у официального дилера
+					    </label>
+
+					    <div class="checkbox">
+						    <label>
+						      <input type="checkbox" name="repair-dop" value="Есть сервисная книжка">
+						      Есть сервисная книжка
+						    </label>
+						</div>	
+
+					</div>
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="repair" value="На вторичном рынке">
+					      Частный сервис
+					    </label>
+					</div>
+
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="repair-dop" value="Учатие в ДТП">
+					      Учатие в ДТП
+					    </label>
+					</div>
+
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="repair-dop" value="Покраска элементов кузова">
+					      Покраска элементов кузова
+					    </label>
+					</div>
+
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="repair-dop" value="Замена или капремонт основных узлов">
+					      Замена или капремонт основных узлов
+					    </label>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="tab-pane" id="step3-tab">
+
+			<div class="row">
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class=" control-label">Интерьер</label>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="inter[]" value="Кожа">
+					      Кожа
+					    </label>
+					</div>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="inter[]" value="Ткань">
+					      Ткань
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="inter[]" value="Комбинированный">
+					      Комбинированный
+					    </label>
+					</div>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="inter[]" value="Люк">
+					      Люк
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="inter[]" value="Панорамная крыша">
+					      Панорамная крыша
+					    </label>
+					</div>
+				</div>
+
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class=" control-label">Безопасность</label>
+
+					<p>Подушек безопасности</p>
+					<div class="input-group " id="input-sell-arrow">
+					  <span class="input-group-btn">
+					      <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="sellArrow">
+					          <span class="glyphicon glyphicon-minus"></span>
+					      </button>
+					  </span>
+					  <input type="text" name="sellArrow" class="form-control input-number" value="1" min="1" max="12" id="sell-arrow">
+					  <span class="input-group-btn">
+					      <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="sellArrow">
+					          <span class="glyphicon glyphicon-plus"></span>
+					      </button>
+					  </span>
+					</div>
+
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cSafe[]" value="Встроенное детское сиденье">
+					      Встроенное детское сиденье
+					    </label>
+					</div>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cSafe[]" value="Антизаносная система">
+					      Антизаносная система
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cSafe[]" value="Сигнализация">
+					      Сигнализация
+					    </label>
+					</div>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cSafe[]" value="Иммобилайзер">
+					      Иммобилайзер
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cSafe[]" value="Громкая связь bluetooth">
+					      Громкая связь bluetooth
+					    </label>
+					</div>
+				</div>
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+					<label class="contr">Подвеска</label>
+
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="c-pnevm[]" value="Пневмоподвеска">
+					      Пневмоподвеска
+					    </label>
+					</div>
+
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="c-pnevm[]" value="Активная подвеска FOUR-C">
+					      Активная подвеска FOUR-C
+					    </label>
+					</div>
+
+					<div class="radio">
+					    <label>
+					      <input type="radio" name="c-pnevm[]" value="Стандартная">
+					      Стандартная
+					    </label>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="row">
+
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+
+					<label class=" control-label">Свет</label>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cLight[]" value="Ксенон">
+					      Ксенон
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cLight[]" value="Противотуманные фары">
+					      Противотуманные фары
+					    </label>
+					</div>	    			
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cLight[]" value="Омыватели фар">
+					      Омыватели фар
+					    </label>
+					</div>
+				</div>
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+
+					<label class=" control-label">Комфорт</label>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Климат-контроль">
+					      Климат-контроль
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Кондиционер">
+					      Кондиционер
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Круиз-контроль">
+					      Круиз-контроль
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Датчик дождя">
+					      Датчик дождя
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Электропривод сиденья водителя">
+					      Электропривод сиденья водителя
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Электропривод сиденья пассажира">
+					      Электропривод сиденья пассажира
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Парктроник">
+					      Парктроник
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Навигация">
+					      Навигация
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Бесключевой доступ">
+					      Бесключевой доступ
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cComf[]" value="Электропривод задней двери">
+					      Электропривод задней двери
+					    </label>
+					</div>
+				</div>
+
+
+
+				<div class="col-xs-4 col-xxs-12 form-group">
+
+					<label class=" control-label">Колеса</label>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cWheel[]" value="Легкосплавные диски">
+					      Легкосплавные диски
+					    </label>
+					</div>
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cWheel[]" value="Стальные диски">
+					      Стальные диски
+					    </label>
+					</div>	    			
+					<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cWheel[]" value="Летняя резина">
+					      Летняя резина
+					    </label>
+					</div>
+	    			<div class="checkbox">
+					    <label>
+					      <input type="checkbox" name="cWheel[]" value="Зимняя резина">
+					      Зимняя резина
+					    </label>
+					</div>					
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="tab-pane" id="step4-tab">
+
+			<div class="row">
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="name">Имя *</label>
+			    <input type="text" class="form-control" id="name" name="name" placeholder="">
+			    <input type="hidden" name="pName">
+			    <small>Как к вам обращаться?</small>
+			  </div>
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="email">Ваш e-mail *</label>
+			    <input type="email" class="form-control" id="email" name="email" placeholder="example@example.com">
+			    <input type="hidden" name="pEmail">
+			  </div>
+
+			</div>
+
+			<div class="row">
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="phone">Телефон для связи *</label>
+			    <input type="text" class="form-control" id="phone" name="phone" placeholder="">
+			    <input type="hidden" name="pPhone">
+			    <small>+7(777) 777-77-77</small>
+			  </div>
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="car">Автоцентр</label>
+			    <select name="salon" class="form-control">
+			    	<option>Любой</option>
+			    	<option value="2">Свид-Мобиль на Энергетиков</option>
+			    	<option value="1">Свид-Мобиль на М. Жукова</option>
+			    	<option value="3">Свид-Мобиль на Приморском</option>
+			    </select>
+			  </div>
+
+		  	</div>
+
+			<div class="row">
+
+			  <div class="col-xs-6 col-xxs-12 form-group">
+			    <label class=" control-label" for="car">Цель оценки</label>
+    			<div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="сTarget[]" value="Поставить на комиссию">
+				     	Поставить на комиссию
+				    </label>
+				</div>	
+    			<div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="сTarget[]" value="Обмен">
+				     	Обмен
+				    </label>
+				</div>	
+				<div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="сTarget[]" value="Срочный выкуп">
+				     	Срочный выкуп
+				    </label>
+				</div>	
+			  </div>
+
+			  <div class="col-xs-12 form-group">
+			    <label class=" control-label" for="car">Дополнительно:</label>
+				<textarea name="messages" class="form-control" rows="4" placeholder="Если Вы хотите что-то добавить к описанию Вашего автомобиля, то напишите это здесь"></textarea>
+			  </div>
+
+			  <div class="col-xs-12 form-group">
+			  	<div class="checkbox c-personal">
+				    <label>
+				      <input type="checkbox" name="c-personal" id="c-personal">
+				     	Подтверждаю согласие на обработку моих персональных данных
+				    </label>
+				</div>	
+			  </div>
+
+			</div>
+
+		</div>
+
+        <!-- Previous/Next buttons -->
+        <ul class="pager wizard">
+            <li class="previous"><a href="javascript: void(0);">Назад</a></li>
+            <li class="next "><a href="javascript: void(0);">Следующий шаг</a></li>
+        </ul>
+
+	</div>
+
+
+</form>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://malsup.github.io/jquery.form.js"></script>
+
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/js/formValidation.min.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/js/framework/bootstrap.min.js"></script>
+<script src="https://swedmobil.ru/bundles/swedmnews/js/bootstrapvalidator/js/language/ru_RU.js"></script>
+
+<script src="https://vinceg.github.io/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+<script src="//oss.maxcdn.com/jquery.mask/1.11.4/jquery.mask.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="https://vk.com/js/api/xd_connection.js?2"  type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	VK.init(function() { 
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+	var mark = $('#mark'),
+		model = $('#model'),
+		year_release = $( "#year-release" ),
+		year_slider = $('#year-slider'),
+		race_release = $( "#race-release" ),
+		race_slider = $('#race-slider'),
+		volume_engine = $('#volume-engine'),
+		volume_engine_slider = $('#volume-engine-slider'),
+		volume_power = $('#volume-power'),
+		volume_power_slider = $('#volume-power-slider');
+
+
+	$('.btn-number').click(function(e){
+	    e.preventDefault();
+	    
+	    fieldName = $(this).attr('data-field');
+	    type      = $(this).attr('data-type');
+	    var input = $("input[name='"+fieldName+"']");
+	    var currentVal = parseInt(input.val());
+	    if (!isNaN(currentVal)) {
+	        if(type == 'minus') {
+	            
+	            if(currentVal > input.attr('min')) {
+	                input.val(currentVal - 1).change();
+	            } 
+	            if(parseInt(input.val()) == input.attr('min')) {
+	                $(this).attr('disabled', true);
+	            }
+
+	        } else if(type == 'plus') {
+
+	            if(currentVal < input.attr('max')) {
+	                input.val(currentVal + 1).change();
+	            }
+	            if(parseInt(input.val()) == input.attr('max')) {
+	                $(this).attr('disabled', true);
+	            }
+
+	        }
+	    } else {
+	        input.val(0);
+	    }
+	});
+	$('.input-number').focusin(function(){
+	   $(this).data('oldValue', $(this).val());
+	});
+	$('.input-number').change(function() {
+	    
+	    minValue =  parseInt($(this).attr('min'));
+	    maxValue =  parseInt($(this).attr('max'));
+	    valueCurrent = parseInt($(this).val());
+	    
+	    name = $(this).attr('name');
+	    if(valueCurrent >= minValue) {
+	        $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+	    } else {
+	        alert('Sorry, the minimum value was reached');
+	        $(this).val($(this).data('oldValue'));
+	    }
+	    if(valueCurrent <= maxValue) {
+	        $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+	    } else {
+	        alert('Sorry, the maximum value was reached');
+	        $(this).val($(this).data('oldValue'));
+	    }
+	    
+	    
+	});
+
+	$(".input-number").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) || 
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+	volume_engine_slider.slider({
+		min: 0.2,
+		max: 6.0,
+		step: 0.1,
+		slide: function( event, ui ) {
+			volume_engine.val( ui.value );
+		}
+	});
+
+    volume_engine.on('change', function(event){
+    	volume_engine_slider.slider( "value", $(this).val() );
+    });
+
+	volume_power_slider.slider({
+		min: 0,
+		max: 300,
+		slide: function( event, ui ) {
+			volume_power.val( ui.value );
+		}
+	});
+
+    volume_power.on('change', function(event){
+    	volume_power_slider.slider( "value", $(this).val() );
+    });
+
+    year_slider.slider({
+    	min: 2000,
+      	max: 2016,
+      	value: 2007,
+		create: function() {
+			year_release.val( $( this ).slider( "value" ) );
+		},
+		slide: function( event, ui ) {
+			year_release.val( ui.value );
+		}
+    });		
+
+    year_release.on('change', function(event){
+    	year_slider.slider( "value", $(this).val() );
+    });
+
+    race_slider.slider({
+    	min: 0,
+      	max: 300000,
+      	value: 20000,
+      	step: 1000,
+		create: function() {
+			race_release.val( $( this ).slider( "value" ) );
+		},
+		slide: function( event, ui ) {
+			race_release.val( ui.value );
+		}
+    });		
+
+    race_release.on('change', function(event){
+    	race_slider.slider( "value", $(this).val() );
+    });
+
+	var empty_mark = $('<option/>')
+		.attr('value', "")
+		.text('Выбрать марку')
+		.appendTo(mark),
+
+		empty_model = $('<option/>')
+			.attr('value', "")
+			.text('Выбрать модель')
+			.appendTo(model);
+
+	$.ajax({
+		method: 'get',
+		url: 'https://swedmobil.ru/api/v1/usedcars/all-makes',
+		success: function(responseText, statusText, xhr, $form){
+
+			$.each(responseText, function(i, dp) {
+
+				var option = $('<option/>')
+					.text(dp.make)
+					.attr('value', dp.makeId)
+					.val(dp.makeId)
+					.appendTo(mark);
+			})
+
+		},
+		error: function() {
+
+		}
+	})
+
+	mark.on('change', function(event){
+
+		model.attr('disabled', 'disabled').val('').empty();
+		$('.small-model').show();
+		empty_model.appendTo(model);
+
+		if( $(event.target).val() === '' ) {
+			$('input[name="realMarka"]').val('').trigger('change');
+			return;
+		}
+
+		$('input[name="realMarka"]').val($(event.target).find(':selected').html()).trigger('change');
+
+		$.ajax({
+			method: 'get',
+			url: 'https://swedmobil.ru/api/v1/usedcars/all-models/' + $(event.target).val(),
+			success: function(responseText, statusText, xhr, $form){
+
+				$.each(responseText, function(i, dp) {
+
+					var option = $('<option/>')
+						.text(dp.model)
+						.attr('value', dp.modelId)
+						.val(dp.modelId)
+						.appendTo(model);
+				});
+
+				model.removeAttr('disabled');
+				$('.small-model').hide();
+
+			},
+			error: function() {
+
+			}
+		})
+
+	});
+
+	model.on('change', function(event) {
+
+		if( $(event.target).val() === '' ) {
+			$('input[name="realModel"]').val('').trigger('change');
+			return;
+		}
+
+		$('input[name="realModel"]').val($(event.target).find(':selected').html()).trigger('change');
+	});
+
+	function validateTab(index) {
+
+        var fv   = $('#formEvaluateVehicle').data('formValidation'), // FormValidation instance
+            // The current tab
+            $tab = $('#formEvaluateVehicle').find('.tab-pane').eq(index);
+
+        // Validate the container
+        fv.validateContainer($tab);
+
+        var isValidStep = fv.isValidContainer($tab);
+        if (isValidStep === false || isValidStep === null) {
+            // Do not jump to the target tab
+            return false;
+        }
+
+        return true;
+    }
+
+	function adjustIframeHeight() {
+        var $body   = $('body'),
+            $iframe = $body.data('iframe.bv');
+        if ($iframe) {
+            // Adjust the height of iframe
+            $iframe.height($body.height());
+        }
+    }
+
+	VK.init(function() { 
+	    // API initialization succeeded 
+	    // Your code here 
+	}, function() { 
+	    // API initialization failed 
+	    // Can reload page here 
+	}, '5.62'); 
+
+    console.log( "swed mobil app ready!" );
+
+	$('#success_btn').on('click', function(){
+		$('#success').hide();
+		$('input[name="dateVisit"]').val( '' ).trigger('change');
+		$('#formEvaluateVehicle').show();
+	});
+
+	$('#formEvaluateVehicle').on('keyup paste change', '[name="email"], [name="phone"], [name="name"]', function(e){
+		 switch ($(this).attr('name')) {
+        	case 'name':
+        		$('input[name="pName"]').val( $(this).val() ).trigger('change');
+        		break;
+			case 'email':
+				$('input[name="pEmail"]').val( $(this).val() ).trigger('change');
+				break;
+			case 'phone':
+				$('input[name="pPhone"]').val( $(this).val() ).trigger('change');
+				break;
+		}
+	});
+
+	$('#formEvaluateVehicle')
+	.formValidation({
+		locale: 'ru_RU',
+		excluded: ':disabled',
+		fields: {
+			model: {
+				validators: {
+                    notEmpty: {
+                        message: 'Укажите Модель'
+                    }
+                }
+			},
+			mark: {
+				validators: {
+                    notEmpty: {
+                        message: 'Укажите Марку'
+                    }
+                }
+			},
+			name: {
+                validators: {
+                    notEmpty: {
+                        message: 'Укажите Ваше Имя'
+                    }
+                }
+            },
+            email: {
+             	validators: {
+                    notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    }
+                }
+            },
+            phone: {
+            	validators: {
+            		notEmpty: {
+                        message: 'Укажите любой удобный вид связи'
+                    },
+            	}
+            },
+            'c-personal': {
+            	validators: {
+                    notEmpty: {
+                        message: 'Подтвердите согласие на обработку персональных данных'
+                    }
+                }
+            }
+		}
+	})
+	.on('keyup', '[name="email"], [name="phone"]', function(e) {
+		var email 	= $('#formEvaluateVehicle').find('[name="email"]').val(),
+            phone   = $('#formEvaluateVehicle').find('[name="phone"]').val(),
+            bv      = $('#formEvaluateVehicle').data('formValidation');
+
+        switch ($(this).attr('name')) {
+			case 'email':
+
+				if (email != '') {
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (email === '' && phone != '') {
+					bv.enableFieldValidators('email', false).revalidateField('phone');
+				}
+
+				if (email === '' && phone === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (email != '' && phone === '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+                break;
+            case 'phone':
+				if (phone != '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+				}
+
+				if (phone === '' && email != '') {
+					bv.enableFieldValidators('phone', false).revalidateField('phone');
+				}
+
+				if (phone === '' && email === '') {
+					bv.enableFieldValidators('phone', true).revalidateField('phone');
+					bv.enableFieldValidators('email', true).revalidateField('email');
+				}
+
+				if (phone != '' && email === '') {
+					bv.enableFieldValidators('email', false).revalidateField('email');
+				}
+                    
+                break;
+        	default:
+                break;
+        }
+
+	})
+	.find('[name="phone"]').mask('+7 (999) 999-99-99').end()
+    .bootstrapWizard({
+	    tabClass: 'nav nav-pills',
+	    onTabClick: function(tab, navigation, index) {
+	        return validateTab(index);
+	    },
+	    onNext: function(tab, navigation, index) {
+	        var numTabs    = $('#formEvaluateVehicle').find('.tab-pane').length,
+	            isValidTab = validateTab(index - 1);
+
+	        if (!isValidTab) {
+	            return false;
+	        }
+
+	        if (index === numTabs) {
+
+		        $('#formEvaluateVehicle').ajaxSubmit({ 
+			        success: function (responseText, statusText, xhr, $form)  { 
+
+			        	// set first tab selected
+			        	$('.nav a:first').tab('show');
+
+			        	var fv = $('#formEvaluateVehicle').data('formValidation');
+
+			        	$form.resetForm();
+			        	fv.resetForm();
+
+						$('#success_content').html(responseText);
+						$('#formEvaluateVehicle').hide();
+						$('#success').show();
+						$('#success_btn').focus();
+						
+					},
+			        beforeSubmit:  function () {
+				    	
+				    },
+			        error:  function (msg) {
+				    	alert('Ошибка при отправке: ' + msg.statusText);
+				    },
+			    });
+
+	        }
+
+	        return true;
+	    },
+	    onPrevious: function(tab, navigation, index) {
+	        // return validateTab(index + 1);
+	        return true;
+	    },
+	    onTabShow: function(tab, navigation, index) {
+	        // Update the label of Next button when we are at the last tab
+	        var numTabs = $('#formEvaluateVehicle').find('.tab-pane').length;
+
+
+
+	        $('#formEvaluateVehicle')
+	            .find('.next')
+	                .removeClass('disabled')    // Enable the Next button
+	                .find('a')
+	                .html(index === numTabs - 1 ? 'Отправить' : 'Следующий шаг');
+
+
+	        // You don't need to care about it
+	        // It is for the specific demo
+	        adjustIframeHeight();
+	    }
+	})
+	;
+
+});
+
+</script>
+
+</body>
+</html>
