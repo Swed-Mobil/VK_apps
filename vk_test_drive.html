@@ -10,7 +10,11 @@
 	<link rel="stylesheet" href="/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
 
 	<style type="text/css">
-
+	
+		#success {		
+			margin-top: 50px; 		
+		}
+		
 		@media screen and (max-width: 414px) {
 	    	.col-xxs-12 {
 	    		width: 100%;
@@ -65,14 +69,18 @@
 			color: #fff;
 			outline: none !important;
 		}
-
+		
+		#success_content {
+			margin-bottom: 20px;
+		}
+		
 	</style>
 
 </head>
 <body class="vk-app">
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content">
 	</div>
 	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
 </div>
@@ -165,15 +173,28 @@
 
 $(document).ready(function() {
 
+    console.log( "swed mobil app ready!" );
+	
+	var first_name, last_name;
+
 	VK.init(function() { 
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#name').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
+
 	    // API initialization failed 
 	    // Can reload page here 
 	}, '5.62'); 
 
-    console.log( "swed mobil app ready!" );
 
 	$('#success_btn').on('click', function(){
 		$('#success').hide();
