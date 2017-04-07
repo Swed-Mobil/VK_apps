@@ -3,13 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-	<title>Запись на ТО></title>
+	<title>Запись на ТО</title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" href="/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
 
 	<style type="text/css">
+	
+		#success {
+			margin-top: 50px; 
+		}
 
 		@media screen and (max-width: 414px) {
 	    	.col-xxs-12 {
@@ -65,14 +69,21 @@
 			color: #fff;
 			outline: none !important;
 		}
-
+		
+		#success_content {		
+			margin-bottom: 20px;		
+		}		
+		.calendar-title {		
+			font-size: 24px;		
+		}
+		
 	</style>
 
 </head>
 <body class="vk-app">
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content">
 	</div>
 	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
 </div>
@@ -122,10 +133,10 @@
     </select>
     <small>Доступное время визита можно будет выбрать после выбора сервисной станции.</small>
 
-	<nav id="calendarPagination" style="	display: none;">
+	<nav id="calendarPagination" style="display: none;">
 	  <ul class="pager" >
 	    <li class="previous"  ><span class="change-range" data-range="prev" aria-hidden="true">&larr;</span></li>
-	    <li><i style="font-size: 24px;">Доступное время</i></li>
+	    <li><i class="calendar-title">Доступное время</i></li>
 	    <li class="next" ><span aria-hidden="true" class="change-range" data-range="next">&rarr;</span></li>
 	  </ul>
 	</nav>
@@ -307,12 +318,26 @@
 
 $(document).ready(function() {
 
+	var first_name, last_name;
+
 	VK.init(function() { 
+
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#name').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
+
 	    // API initialization failed 
 	    // Can reload page here 
+
 	}, '5.62'); 
 
 	renderTable = function(countDays, location, startDate, endDate) {
