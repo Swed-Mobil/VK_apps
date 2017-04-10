@@ -24,6 +24,7 @@
 
 		.list-group-item.no-border.cars-photo {
 			padding-top: 10px;
+			min-height: 186px;
 		}
 
 		.list-group-item.no-border.cars-actions {
@@ -95,6 +96,37 @@
 			border-bottom: none;
 		}
 
+		.carsshow-options hr {
+			margin-top: 5px; 
+			margin-bottom: 5px;
+		}
+
+		.carsshow-options .carsshow-options-title {
+			font-weight: 700; 
+			margin-bottom: 5px;
+		}
+
+		.carsshow-options .carsshow-options-item {
+			padding-left: 5px; 
+			margin-bottom: 3px; 
+			font-size: 13px;
+		}
+
+		.carsshow-accessors-header {
+			text-transform: uppercase; 
+			font-size: 14px; 
+			margin-bottom: 0px;
+		}
+
+		.carsshow-accessors b {
+			height: 80px; 
+			display: block;
+		}
+
+		.carsshow-accessors img {
+			padding: 5px;
+		}
+
 		#success {
 			margin-top: 50px; 
 		}
@@ -140,25 +172,63 @@
 			margin-top: 10px;
 		}
 
+		.padding_top_10 {
+			padding-top: 10px;
+		}
+
+		.margin_top_5 {
+			margin-top: 5px;
+		}
+
+		.btnback {
+			padding-top: 10px;
+		}
+
+		.btnback hr {
+			margin: 0 5px 0 0;
+		}
+
+		.cars,
+		.carsshow,
+		.accsshow {
+			padding-top: 10px;
+		}
+
+		#success_content {
+			margin-bottom: 20px;
+		}
+
+		.carsShow {
+			cursor: pointer;
+		}
+
+		img.carsShow {
+			min-width: 100%;
+		}
+		
+		#formFeedback {
+			padding-top: 10px;
+		}
+
 	</style>
 
 </head>
 <body class="vk-app">
 
 <!-- btn back -->
-<div class="btnback" id="btnback" style="padding-top: 10px; display: none;">
+<div class="btnback" id="btnback" style=" display: none;">
 	<a href="#" class="btn btn-vk " onclick="javascript:window.history.back();"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp;Назад</a>
-	<hr style="margin: 0; margin-top: 5px;">
+	<hr >
 </div>
 <!-- /btn back -->
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content" >
 	</div>
 	<button class="btn btn-vk" id="success_btn" onclick="javascript:window.history.back();">Вернуться назад</button>
 </div>
 
-<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit" style="padding-top: 10px; display: none;">
+<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit" style="display: none;">
 
 	<input type="hidden" name="formId" value="51">
 
@@ -230,7 +300,7 @@
 
 </form>
 
-<div class="cars" style="padding-top: 10px;">
+<div class="cars">
 	<div class="cars-content"></div>
 	<div class="cars-pagination">
 
@@ -241,11 +311,11 @@
 	</div>
 </div>
 
-<div class="carsshow" style="padding-top: 10px;">
+<div class="carsshow">
 
 </div>
 
-<div class="accsshow" style="padding-top: 10px;">
+<div class="accsshow">
 
 </div>
 
@@ -270,13 +340,26 @@ $(document).ready(function() {
 		VK.callMethod("resizeWindow", null, $('.vk-app').height() + 20);
     }
 
+	var first_name, last_name;
+
 	VK.init(function() { 
 
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#name').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
+
 	    // API initialization failed 
 	    // Can reload page here 
+
 	}, '5.62'); 
 
 	var r_department = $('#r_department');
@@ -501,14 +584,13 @@ $(document).ready(function() {
     	if (info != "") {
 
 	    	$('<p />')
-	    		.attr('style', 'padding-top: 10px;')
+	    		.addClass('padding_top_10')
 	    		.text(info)
 	    		.appendTo($accsshow);
     	}
 
 		var $btnwrap = $('<div />')
-			.attr('style', 'padding-top: 10px;')
-			.addClass('text-center')
+			.addClass('text-center padding_top_10')
 			.appendTo($accsshow);
 
 		var $btn = $('<a />')
@@ -545,8 +627,7 @@ $(document).ready(function() {
 					.appendTo($rowbtncarshow);
 
 				var $btnwrap = $('<div />')
-					.attr('style', 'padding-top: 10px;')
-					.addClass('text-center')
+					.addClass('text-center padding_top_10')
 					.appendTo($col1btncarshow);
 
 				$('<a />')
@@ -562,8 +643,7 @@ $(document).ready(function() {
 					.appendTo($btnwrap);
 
 				var $btnwrap = $('<div />')
-					.attr('style', 'padding-top: 10px;')
-					.addClass('text-center')
+					.addClass('text-center padding_top_10')
 					.appendTo($col1btncarshow);
 
 				$('<a />')
@@ -579,8 +659,7 @@ $(document).ready(function() {
 					.appendTo($btnwrap);
 
 				var $btnwrap = $('<div />')
-					.attr('style', 'padding-top: 10px;')
-					.addClass('text-center')
+					.addClass('text-center padding_top_10')
 					.appendTo($col2btncarshow);
 
 				$('<a />')
@@ -596,8 +675,7 @@ $(document).ready(function() {
 					.appendTo($btnwrap);
 
 				var $btnwrap = $('<div />')
-					.attr('style', 'padding-top: 10px;')
-					.addClass('text-center')
+					.addClass('text-center padding_top_10')
 					.appendTo($col2btncarshow);
 
 				$('<a />')
@@ -622,8 +700,7 @@ $(document).ready(function() {
 					.appendTo($carsshow);
 
   				var $fotorama = $('<div />')
-  					.attr('style', 'padding-top: 10px;')
-  					.addClass('fotorama')
+  					.addClass('fotorama padding_top_10')
   					.attr('data-nav', 'thumbs')
   					.appendTo($carsshow);
 
@@ -735,27 +812,23 @@ $(document).ready(function() {
 
 					if (option.name) {
 
-
 						if (i != 0) {
 
 							$('<hr />')
-								.attr('style', 'margin-top: 5px; margin-bottom: 5px;')
 								.appendTo($options);
 
 						}
 
 						$('<p />')
-							.attr('style', 'font-weight: 700; margin-bottom: 5px;')
 							.text(option.name)
+							.addClass('carsshow-options-title')
 							.appendTo($options);
 					}
 
 					$.each(option.items, function (i, item) {
 
-
-
 						$('<p />')
-							.attr('style', 'padding-left: 5px; margin-bottom: 3px; font-size: 13px;')
+							.addClass('carsshow-options-item')
 							.text(item)
 							.appendTo($options);
 
@@ -766,16 +839,16 @@ $(document).ready(function() {
 				// Accessors
 
 				$('<h4 />')
-					.attr('style', 'text-transform: uppercase; font-size: 14px; margin-bottom: 0px; ')
+					.addClass('carsshow-accessors-header')
 					.text('Доп. Оборудование')
 					.appendTo($carsshow);
 
 				$('<hr />')
-					.attr('style', 'margin-top: 5px; ')
+					.addClass('margin_top_5')
 					.appendTo($carsshow);
 
 				var $accessors = $('<div />')
-					.addClass('owl-carousel owl-theme')
+					.addClass('owl-carousel owl-theme carsshow-accessors')
 					.appendTo($carsshow);
 
 				$.each(responseText.Accessors, function (i, accessor) {
@@ -786,18 +859,15 @@ $(document).ready(function() {
 							.appendTo($accessors);
 
 						$('<b />')
-							.attr('style', 'height: 80px; display: block;')
 							.text(item.Title)
 							.appendTo($item);
 
 						$('<img />')
-							.attr('style', 'padding: 5px; ')
 							.attr('src', item.PhotoSqare)
 							.appendTo($item);
 
 						var $btnwrapper = $('<div />')
-							.attr('style', 'padding-top: 10px;')
-							.addClass('text-center')
+							.addClass('text-center padding_top_10')
 							.appendTo($item);
 
 						$('<a />')
@@ -928,15 +998,12 @@ $(document).ready(function() {
 
 					var $li_img = $('<li />')
 						.addClass('list-group-item no-border cars-photo')
-						.css('min-height', '186px')
 						.appendTo($ul);
 
 					var $img = $('<img />')
 						.attr('data-uid', dp.Uid)
 						.attr('src', dp.Photo)
-						.css('cursor', 'pointer')
 						.addClass('carsShow')
-						.css('max-width', '100%')
 						.appendTo($li_img);
 
 					// short info 
