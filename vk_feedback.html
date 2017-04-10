@@ -10,7 +10,11 @@
 	<link rel="stylesheet" href="/bundles/swedmnews/js/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
 
 	<style type="text/css">
-
+	
+		#success {
+			margin-top: 50px; 
+		}
+		
 		@media screen and (max-width: 414px) {
 	    	.col-xxs-12 {
 	    		width: 100%;
@@ -65,19 +69,23 @@
 			color: #fff;
 			outline: none !important;
 		}
-
+		
+		#success_content {
+			margin-bottom: 20px;
+		}
+		
 	</style>
 
 </head>
 <body class="vk-app">
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content">
 	</div>
 	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
 </div>
 
-<form method="POST" id="formTestDrive" action="https://www.swedmobil.ru/form-submit">
+<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit">
 
 	<input type="hidden" name="formId" value="">
 
@@ -188,9 +196,20 @@ $(document).ready(function() {
 		}
 	})
 
+	var first_name, last_name;
+
 	VK.init(function() { 
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#name').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
 	    // API initialization failed 
 	    // Can reload page here 
@@ -201,10 +220,10 @@ $(document).ready(function() {
 	$('#success_btn').on('click', function(){
 		$('#success').hide();
 		$('input[name="dateVisit"]').val( '' ).trigger('change');
-		$('#formTestDrive').show();
+		$('#formFeedback').show();
 	});
 
-	$('#formTestDrive')
+	$('#formFeedback')
 	.bootstrapValidator({
 		locale: 'ru_RU',
 		fields: {
@@ -239,9 +258,9 @@ $(document).ready(function() {
 		}
 	})
 	.on('keyup', '[name="email"], [name="phone"]', function(e) {
-		var email 	= $('#formTestDrive').find('[name="email"]').val(),
-            phone   = $('#formTestDrive').find('[name="phone"]').val(),
-            bv      = $('#formTestDrive').data('bootstrapValidator');
+		var email 	= $('#formFeedback').find('[name="email"]').val(),
+            phone   = $('#formFeedback').find('[name="phone"]').val(),
+            bv      = $('#formFeedback').data('bootstrapValidator');
 
         switch ($(this).attr('name')) {
 			case 'email':
@@ -303,7 +322,7 @@ $(document).ready(function() {
         $form.bootstrapValidator('disableSubmitButtons', false);
 
 
-        $('#formTestDrive').ajaxSubmit({ 
+        $('#formFeedback').ajaxSubmit({ 
 	        success: function (responseText, statusText, xhr, $form)  { 
 
 	        	$form.resetForm();
@@ -312,7 +331,7 @@ $(document).ready(function() {
 				$('#formSubmit').removeAttr('disabled');
 
 				$('#success_content').html(responseText);
-				$('#formTestDrive').hide();
+				$('#formFeedback').hide();
 				$('#success').show();
 				$('#success_btn').focus();
 				
