@@ -136,26 +136,104 @@
 			margin-top: 10px;
 		}
 
+		.btnback {
+			padding-top: 10px;
+		}
+
+		.btnback hr {
+			margin: 0 5px 0 0;
+		}
+
+		.padding_top_10 {
+			padding-top: 10px;
+		}
+
+		.margin_0 {
+			margin: 0;
+		}
+
+		.margin_top_5 {
+			margin-top: 5px;
+		}
+
+		.margin_bottom_5 {
+			margin-bottom: 5px; 
+		}
+
+		.margin_bottom_20 {
+			margin-bottom: 20px;
+		}
+
+		.carsShow {
+			cursor: pointer;
+		}
+
+		img.carsShow {
+			max-width: 100%;
+		}
+
+		.font_weight_700 {
+			font-weight: 700;
+		}
+
+		.option_items {
+			padding-left: 5px; 
+			margin-bottom: 3px; 
+			font-size: 13px;
+		}
+
+		.first_sale {
+			font-weight: 700; 
+			margin-top: 5px; 
+			margin-bottom: 5px;
+		}
+
+		.first_sale_date {
+			padding-left: 5px; 
+			margin-bottom: 0px; 
+			font-size: 13px;
+		}
+
+		.first_sale_location {
+			padding-left: 5px; 
+			margin-bottom: 0px; 
+			font-size: 13px;
+		}
+
+		.cars.
+		.carsshow,
+		.accsshow {
+			padding-top: 10px;
+		}
+		
+		#success_content {
+			margin-bottom: 20px;
+		}
+		
+		#formFeedback {
+			padding-top: 10px;
+		}
+		
 	</style>
 
 </head>
 <body class="vk-app">
 
 <!-- btn back -->
-<div class="btnback" id="btnback" style="padding-top: 10px; display: none;">
+<div class="btnback" id="btnback" style="display: none;">
 	<a href="#" class="btn btn-vk" onclick="javascript:window.history.back();"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>&nbsp;Назад</a>
 	<button class="btn btn-vk pull-right btnfeedback">Забронировать</button>
-	<hr style="margin: 0; margin-top: 5px;">
+	<hr>
 </div>
 <!-- /btn back -->
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content">
 	</div>
 	<button class="btn btn-vk" id="success_btn" onclick="javascript:window.history.back();">Вернуться назад</button>
 </div>
 
-<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit" style="padding-top: 10px; display: none;">
+<form method="POST" id="formFeedback" action="https://www.swedmobil.ru/form-submit" style="display: none;">
 
 	
 
@@ -245,7 +323,7 @@
 
 </form>
 
-<div class="cars" style="padding-top: 10px;">
+<div class="cars">
 	<div class="cars-content"></div>
 	<div class="cars-pagination">
 
@@ -256,11 +334,11 @@
 	</div>
 </div>
 
-<div class="carsshow" style="padding-top: 10px;">
+<div class="carsshow">
 
 </div>
 
-<div class="accsshow" style="padding-top: 10px;">
+<div class="accsshow">
 
 </div>
 
@@ -286,10 +364,20 @@ $(document).ready(function() {
 		VK.callMethod("resizeWindow", null, $('.vk-app').height() + 20);
     }
 
-	VK.init(function() { 
+	var first_name, last_name;
 
+	VK.init(function() { 
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#userName').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
 	    // API initialization failed 
 	    // Can reload page here 
@@ -419,13 +507,13 @@ $(document).ready(function() {
     	if (info != "") {
 
 	    	$('<p />')
-	    		.attr('style', 'padding-top: 10px;')
+	    		.addClass('padding_top_10')
 	    		.text(info)
 	    		.appendTo($accsshow);
     	}
 
 		var $btnwrap = $('<div />')
-			.attr('style', 'padding-top: 10px;')
+			.addClass('padding_top_10')
 			.addClass('text-center')
 			.appendTo($accsshow);
 
@@ -467,7 +555,7 @@ $(document).ready(function() {
   				if (responseText.Photos.length > 0) {
 
 	  				var $fotorama = $('<div />')
-	  					.attr('style', 'padding-top: 10px;')
+	  					.addClass('padding_top_10')
 	  					.addClass('fotorama')
 	  					.attr('data-nav', 'thumbs')
 	  					.appendTo($carsshow);
@@ -652,13 +740,13 @@ $(document).ready(function() {
 						if (i != 0) {
 
 							$('<hr />')
-								.attr('style', 'margin-top: 5px; margin-bottom: 5px;')
+								.addClass('margin_top_5 margin_bottom_5')
 								.appendTo($options);
 
 						}
 
 						$('<p />')
-							.attr('style', 'font-weight: 700; margin-bottom: 5px;')
+							.addClass('font_weight_700 margin_bottom_5')
 							.text(option.name)
 							.appendTo($options);
 					}
@@ -667,7 +755,7 @@ $(document).ready(function() {
 
 
 						$('<p />')
-							.attr('style', 'padding-left: 5px; margin-bottom: 3px; font-size: 13px;')
+							.addClass('option_items')
 							.text(item)
 							.appendTo($options);
 
@@ -696,18 +784,18 @@ $(document).ready(function() {
 
 					$('<p />')
 						.html('Первая продажа')
-						.attr('style', 'font-weight: 700; margin-top: 5px; margin-bottom: 5px;')
+						.addClass('first_sale')
 						.appendTo($dop);
 
 
 					$('<p />')
 						.html('<span class="text-primary">Дата: </span>' + moment(responseText.FirstSaleDate).format('DD.MM.YYYY'))
-						.attr('style', 'padding-left: 5px; margin-bottom: 0px; font-size: 13px;')
+						.addClass('first_sale_date')
 						.appendTo($dop);
 
 					$('<p />')
 						.html('<span>Место: </span>' + responseText.FirstSaleLocation)
-						.attr('style', 'padding-left: 5px; margin-bottom: 0px; font-size: 13px;')
+						.addClass('first_sale_location')
 						.appendTo($dop);
 
 				}
@@ -715,7 +803,7 @@ $(document).ready(function() {
 				// PtsOwners
 
 				$('<p />')
-					.attr('style', 'margin-top: 5px;')
+					.addClass('margin_top_5')
 					.html('<b>Количество владельцев</b> ' + responseText.PtsOwners)
 					.appendTo($dop);
 
@@ -726,23 +814,23 @@ $(document).ready(function() {
 
 					$('<p />')
 						.html('Последнее ТО')
-						.attr('style', 'font-weight: 700; margin-top: 5px; margin-bottom: 5px;')
+						.addClass('first_sale')
 						.appendTo($dop);
 
 					$('<p />')
 						.html('<span class="text-primary">Дата: </span>' + moment(responseText.LastMaintenanceDate).format('DD.MM.YYYY'))
-						.attr('style', 'padding-left: 5px; margin-bottom: 0px; font-size: 13px;')
+						.addClass('first_sale_date')
 						.appendTo($dop);
 
 					$('<p />')
 						.html('<span>Место: </span>' + responseText.LastMaintenanceLocation)
-						.attr('style', 'padding-left: 5px; margin-bottom: 0px; font-size: 13px;')
+						.addClass('first_sale_location')
 						.appendTo($dop);
 
 					if (responseText.lastMaintenanceRace != undefined) {
 
 						$('<p />')
-							.attr('style', 'padding-left: 5px; margin-bottom: 0px; font-size: 13px;')
+							.addClass('first_sale_location')
 							.html('<span>При пробеге: </span>' + $.number( responseText.lastMaintenanceRace, 0, '.', ' ' )  + ' км')
 							.appendTo($dop);
 					}
@@ -752,7 +840,7 @@ $(document).ready(function() {
 				if (responseText.ServiceBookExists != undefined)
 				{
 					$('<p />')
-						.attr('style', 'font-weight: 700; margin-top: 5px;')
+						.addClass('font_weight_700 margin_top_5')
 						.html('Есть сервисная книжка')
 						.appendTo($dop);
 				}
@@ -760,7 +848,7 @@ $(document).ready(function() {
 				if (responseText.KeysCount != undefined)
 				{
 					$('<p />')
-						.attr('style', 'margin-top: 5px;')
+						.addClass('margin_top_5')
 						.html('<b>Количество ключей</b> ' + responseText.KeysCount)
 						.appendTo($dop);
 				}
@@ -857,8 +945,6 @@ $(document).ready(function() {
 
 					var $img = $('<img />')
 						.attr('src', dp.Photo)
-						.css('max-width', '100%')
-						.css('cursor', 'pointer')
 						.addClass('carsShow')
 						.attr('data-id', dp.Id)
 						.appendTo($li_img);
@@ -876,7 +962,7 @@ $(document).ready(function() {
 
 					var $li_mark = $('<li />')
 						.addClass('list-group-item cars-title no-border')
-						.html('<b data-id="'+dp.Id+'" style="cursor: pointer;" class="carsShow">' + dp.Make + ', ' + dp.Model + '</b>')
+						.html('<b data-id="'+dp.Id+'" class="carsShow">' + dp.Make + ', ' + dp.Model + '</b>')
 						.appendTo($ul);
 
 					if (colCount == 0) {
