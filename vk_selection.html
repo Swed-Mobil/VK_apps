@@ -71,14 +71,42 @@
 			color: #fff;
 			outline: none !important;
 		}
+		
+		#success_content {
+			margin-bottom: 20px;
+		}
 
+		.margin_top_0 {
+			margin-top: 0px; 
+		}
+
+		.margin_bottom_0 {
+			margin-bottom: 0px; 
+		}
+
+		/*input pipe */
+		.input-pipe span {
+			display:inline-block; 
+			vertical-align: middle;
+		}
+
+		.input-pipe input {
+			display: inline-block; 
+			padding: 0 10px; 
+			margin: 0 5px 0 2px; 
+			text-align: center; 
+			vertical-align: 
+			middle; 
+			width: 85px;"
+		}
+		
 	</style>
 
 </head>
 <body class="vk-app">
 
 <div id="success" style="display: none;" class="text-center">
-	<div id="success_content" style="margin-bottom: 20px;">
+	<div id="success_content">
 	</div>
 	<button class="btn btn-vk" id="success_btn">Новая заявка</button>
 </div>
@@ -88,7 +116,7 @@
 	<input type="hidden" name="formId" value="34">
 
 	<h3>Контактные данные</h3>
-  	<hr style="margin-top: 0px;">
+  	<hr style="margin_top_0">
 
 	<div class="row">
 
@@ -114,7 +142,7 @@
   </div>
 
   <h3>Автомобиль</h3>
-  <hr style="margin-top: 0px;">
+  <hr class="margin_top_0">
 
 
   <div class="row">
@@ -125,15 +153,15 @@
 
 		<div id="price-range" class="form-control"></div>
 
-		<div class="pull-left">
-			<span style="display:inline-block; vertical-align: middle;">от</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-price" name="minPrice" class="form-control" autocomplete="off" value="0">
-    		<span style="display:inline-block; vertical-align: middle;">руб.</span>
+		<div class="input-pipe pull-left">
+			<span >от</span>
+			<input type="text" id="min-price" name="minPrice" class="form-control" autocomplete="off" value="0">
+    		<span >руб.</span>
 		</div>
-		<div class="pull-right">
-			<span style="display:inline-block; vertical-align: middle;">до</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-price" name="maxPrice" class="form-control" autocomplete="off" value="5 000 000">
-    		<span style="display:inline-block; vertical-align: middle;">руб.</span>
+		<div class="input-pipe pull-right">
+			<span >до</span>
+			<input type="text" id="max-price" name="maxPrice" class="form-control" autocomplete="off" value="5 000 000">
+    		<span >руб.</span>
 		</div>
 
   	</div>
@@ -152,7 +180,7 @@
 
   <div class="row" id="row-model-title" style="display:none;">
 
-  	<div class="col-xs-6 form-group" style="margin-bottom: 0px !important;">
+  	<div class="col-xs-6 form-group margin_bottom_0">
   		<label class=" control-label" for="">Модель</label>
 
   	</div>
@@ -182,15 +210,15 @@
 
 		<div id="year-range" class="form-control"></div>
 
-		<div class="pull-left">
-			<span style="display:inline-block; vertical-align: middle;">от</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-year" name="minYear" class="form-control" autocomplete="off" value="2008">
-    		<span style="display:inline-block; vertical-align: middle;">г.</span>
+		<div class="input-pipe pull-left">
+			<span>от</span>
+			<input type="text" id="min-year" name="minYear" class="form-control" autocomplete="off" value="2008">
+    		<span>г.</span>
 		</div>
-		<div class="pull-right">
-			<span style="display:inline-block; vertical-align: middle;">до</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-year" name="maxYear" class="form-control" autocomplete="off" value="2017">
-    		<span style="display:inline-block; vertical-align: middle;">г.</span>
+		<div class="input-pipe pull-right">
+			<span>до</span>
+			<input type="text" id="max-year" name="maxYear" class="form-control" autocomplete="off" value="2017">
+    		<span>г.</span>
 		</div>
 
 	</div>
@@ -200,15 +228,15 @@
 
 		<div id="race-range" class="form-control"></div>
 
-		<div class="pull-left">
-			<span style="display:inline-block; vertical-align: middle;">от</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="min-race" name="minRace" class="form-control" autocomplete="off" value="0">
-    		<span style="display:inline-block; vertical-align: middle;">км</span>
+		<div class="input-pipe pull-left">
+			<span >от</span>
+			<input  type="text" id="min-race" name="minRace" class="form-control" autocomplete="off" value="0">
+    		<span>км</span>
 		</div>
-		<div class="pull-right">
-			<span style="display:inline-block; vertical-align: middle;">до</span>
-			<input style="display: inline-block; padding: 0 10px; margin: 0 5px 0 2px; text-align: center; vertical-align: middle; width: 85px;" type="text" id="max-race" name="maxRace" class="form-control" autocomplete="off" value="500 000">
-    		<span style="display:inline-block; vertical-align: middle;">км</span>
+		<div class="input-pipe pull-right">
+			<span>до</span>
+			<input type="text" id="max-race" name="maxRace" class="form-control" autocomplete="off" value="500 000">
+    		<span>км</span>
 		</div>
 
 	</div>	
@@ -328,9 +356,20 @@ $(document).ready(function() {
 		VK.callMethod("resizeWindow", null, $('#formPickCar').height() + 20);
     }
 
+	var first_name, last_name;
+
 	VK.init(function() { 
 	    // API initialization succeeded 
 	    // Your code here 
+
+	    VK.api('users.get', {}, function (data) {
+
+	    	first_name = data.response[0].first_name;
+	    	last_name = data.response[0].last_name;
+
+	    	$('#userName').val(last_name + " " + first_name);
+	    });
+
 	}, function() { 
 	    // API initialization failed 
 	    // Can reload page here 
