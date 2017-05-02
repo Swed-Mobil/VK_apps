@@ -38,7 +38,10 @@
 			font-size: 18px;
 			text-align: right;
 		}
-
+		.list-group-item.cars-price .once-price {
+			padding-top: 25px;
+    		display: block;
+		}
 		.list-group-item.cars-title {
 			padding: 5px 15px;
 			font-size: 18px;
@@ -767,8 +770,6 @@ $(document).ready(function() {
 
     	$.each(cars, function(index, value) {
 
-    		console.log( value.Make, value.Price, value.OldPrice );
-
     		if ( $('#sale').is(':checked') && value.Price == value.OldPrice || value.OldPrice == 0 || value.OldPrice < value.Price ) { return true; }
 
     		if ( value.Price > $priceRange.slider("values")[1] ||  value.Price < $priceRange.slider("values")[0] ) { return true; }
@@ -1466,7 +1467,14 @@ $(document).ready(function() {
 
 
 
-					$li_price.html('<b>' + $.number( dp.Price, 0, '.', ' ' ) +' руб.</b>' );
+					if (dp.Price < dp.OldPrice)		 
+ 					{		 
+ 						$li_price.html('<b class="text-danger"><del>'+ $.number( dp.OldPrice, 0, '.', ' ' )  +'  руб.</del></b><br><b>'+ $.number( dp.Price, 0, '.', ' ' ) +' руб.</b>');	
+ 					}		
+ 					else		
+ 					{		
+ 						$li_price.html('<b class="once-price">' + $.number( dp.Price, 0, '.', ' ' ) +' руб.</b>' );		
+ 					}
 
 					// btn
 
