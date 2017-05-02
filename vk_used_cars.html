@@ -641,12 +641,14 @@ $(document).ready(function() {
 		$minYear = $('input[name="minYear"]'),
 		$maxYear = $('input[name="maxYear"]');
 
+	$maxYear.val( new Date().getFullYear() );
+		
     $yearRange.slider({
       range: true,
       min: 1990,
-      max: 2017,
+      max:  new Date().getFullYear() ,
       step: 1,
-      values: [ 1990, 2017 ],
+      values: [ 1990,  new Date().getFullYear()  ],
       create: function( event, ui ) {
 
       },
