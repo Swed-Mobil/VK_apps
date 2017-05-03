@@ -38,6 +38,18 @@
 			font-size: 18px;
 			text-align: right;
 		}
+		.list-group-item.cars-price .cars-location {
+			width: 40%;
+		}
+		.list-group-item.cars-price .cars-prices {
+			width: 60%;
+		}
+		.list-group-item.cars-price .cars-location p {
+			font-size: 12px;
+			padding-top: 15px;
+    		padding-bottom: 0px;
+    		margin-bottom: 0px;
+		}		
 		.list-group-item.cars-price .once-price {
 			padding-top: 25px;
     		display: block;
@@ -1466,15 +1478,16 @@ $(document).ready(function() {
 						.appendTo($ul);
 
 
-
 					if (dp.Price < dp.OldPrice)		 
  					{		 
- 						$li_price.html('<b class="text-danger"><del>'+ $.number( dp.OldPrice, 0, '.', ' ' )  +'  руб.</del></b><br><b>'+ $.number( dp.Price, 0, '.', ' ' ) +' руб.</b>');	
+ 						$li_price.html('<div class="pull-left text-left cars-location"><p>' + dp.Location + '</p></div><div class="pull-right cars-prices text-right"><b class="text-danger"><del>'+ $.number( dp.OldPrice, 0, '.', ' ' )  +'  руб.</del></b><br><b>'+ $.number( dp.Price, 0, '.', ' ' ) +' руб.</b></div><div class="clearfix"></div>');	
  					}		
  					else		
  					{		
- 						$li_price.html('<b class="once-price">' + $.number( dp.Price, 0, '.', ' ' ) +' руб.</b>' );		
- 					}
+ 						
+ 						$li_price.html('<div class="pull-left text-left cars-location"><p>' + dp.Location + '</p></div><div class="pull-right cars-prices text-right"><b class="once-price">' + $.number( dp.Price, 0, '.', ' ' ) +' руб.</b></div><div class="clearfix"></div>' );	
+
+ 					}	 					}
 
 					// btn
 
