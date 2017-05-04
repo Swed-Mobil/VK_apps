@@ -17,6 +17,26 @@
 	<style type="text/css">
 
 
+		.ui-state-active,
+		.ui-widget-content .ui-state-active,
+		.ui-widget-header .ui-state-active,
+		a.ui-button:active,
+		.ui-button:active,
+		.ui-button.ui-state-active:hover {
+			border: 1px solid #5e81a8;
+			background: #5e81a8;
+			font-weight: normal;
+			color: #ffffff;
+		}
+
+		.btn-sort .glyphicon  {
+			top: 2px;
+		}
+
+		.sort .row .col-xs-2 {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
 
 		/*cars*/
 
@@ -113,6 +133,14 @@
 		@media screen and (max-width: 414px) {
 	    	.col-xxs-12 {
 	    		width: 100%;
+	    	}
+
+	    	.col-xxs-4 {
+	    		width: 33%;
+	    	}
+
+	    	.col-xxs-6 {
+	    		width: 50%;
 	    	}
 	   	}
 
@@ -250,6 +278,10 @@
 			width: 85px;"
 		}
 
+		#collapseLocation .checkbox {
+			margin-right: 15px;
+		}
+		
 		.collapseLocationIcon {
 			top: 2px;
 		}
@@ -474,12 +506,12 @@
 
 	</div>
 
-	<div class="col-xs-6">
+	<div class="col-xs-6 text-right">
 
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" name="sale" id="sale">
-				Показывать только со скидкой
+				Со скидкой&nbsp;<span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
 			</label>
 		</div>
 
@@ -495,21 +527,21 @@
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="p" id="locationP">
-					Swed-Mobil Приморский
+					На Приморском
 				</label>
 			</div>
 
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="e" id="locationE">
-					Swed-Mobil Энергетиков
+					На Энергетиков
 				</label>
 			</div>
 
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="Z" id="locationZ">
-					Swed-Mobil Маршала Жукова
+					На Маршала Жукова
 				</label>
 			</div>
 
@@ -522,6 +554,39 @@
 </div>
 
 <hr class="filter_hr" >
+
+<div class="sort" style="padding: 5px 10px;">
+
+	<div class="row">
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-price" data-sort="down">Цена&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-race" data-sort="down">Пробег&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-year" data-sort="down">Год&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-sale" data-sort="down">Скидка&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-location" data-sort="down">Салон&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-2 col-xxs-4">
+		<button class="btn btn-default btn-block btn-sort btn-sort-kpp" data-sort="down">КПП&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+</div>
+
+</div>
+
 <div class="cars">
 	<div class="cars-content"></div>
 	<div class="cars-pagination">
@@ -740,6 +805,190 @@ $(document).ready(function() {
     	changeValMax($(this), $raceRange, true);
     });	
 
+
+    // sort events
+
+    $(document).on('click', '.btn-sort', function(event) {
+
+    	console.log(fCars);
+
+    	if ($(event.target).hasClass('btn-sort-icon')) {
+    		var $target = $(event.target).parent();
+    	} else {
+    		var $target = $(event.target);
+    	}
+
+		if ($target.attr('data-sort') == 'down') {
+
+			$target.attr('data-sort', 'up');
+			$target.find('.glyphicon-menu-down').removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+
+			if ($target.hasClass('btn-sort-price')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Price > b.Price) 
+				        return -1 
+				    if (a.Price < b.Price)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+
+			if ($target.hasClass('btn-sort-race')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Kilometrage > b.Kilometrage) 
+				        return -1 
+				    if (a.Kilometrage < b.Kilometrage)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-year')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Year > b.Year) 
+				        return -1 
+				    if (a.Year < b.Year)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-sale')) {
+
+				fCars.sort(function(a,b) {
+
+					var saleA = a.OldPrice - a.Price, saleB = b.OldPrice - b.Price;
+					
+		    		if (saleA > saleB) 
+				        return -1 
+				    if (saleA < saleB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-location')) {
+
+				fCars.sort(function(a,b) {
+
+					var locationA= a.Location.toLowerCase(), locationB=b.Location.toLowerCase()
+
+		    		if (locationA > locationB) 
+				        return -1 
+				    if (locationA < locationB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-kpp')) {
+
+				fCars.sort(function(a,b) {
+
+					var transmissionA= a.Transmission.toLowerCase(), transmissionB=b.Transmission.toLowerCase()
+
+		    		if (transmissionA > transmissionB) 
+				        return -1 
+				    if (transmissionA < transmissionB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+		} else {
+
+			$target.attr('data-sort', 'down');
+			$target.find('.glyphicon-menu-up').removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+
+
+			if ($target.hasClass('btn-sort-price')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Price < b.Price) 
+				        return -1 
+				    if (a.Price > b.Price)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-race')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Kilometrage < b.Kilometrage) 
+				        return -1 
+				    if (a.Kilometrage > b.Kilometrage)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-year')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Year < b.Year) 
+				        return -1 
+				    if (a.Year > b.Year)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-sale')) {
+
+				fCars.sort(function(a,b) {
+
+					var saleA = a.OldPrice - a.Price, saleB = b.OldPrice - b.Price;
+
+		    		if (saleA < saleB) 
+				        return -1 
+				    if (saleA > saleB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-location')) {
+
+				fCars.sort(function(a,b) {
+
+					var locationA= a.Location.toLowerCase(), locationB=b.Location.toLowerCase()
+
+		    		if (locationA < locationB) 
+				        return -1 
+				    if (locationA > locationB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-kpp')) {
+
+				fCars.sort(function(a,b) {
+
+					var transmissionA= a.Transmission.toLowerCase(), transmissionB=b.Transmission.toLowerCase()
+
+		    		if (transmissionA < transmissionB) 
+				        return -1 
+				    if (transmissionA > transmissionB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+		}
+
+		totalCars = 0;
+    	getCars(countCats, totalCars);
+		renderPages(countCats, fCars.length);
+
+    });
+	
+	
 	function adjustIframeHeight() {
 		VK.callMethod("resizeWindow", null, $('.vk-app').height() + 20);
     }
@@ -769,6 +1018,7 @@ $(document).ready(function() {
     	$carsshow = $('.carsshow'),
     	$accsshow = $('.carsshow'),
     	$filter = $('.filter'),
+    	$sort = $('.filter'),
     	totalCars = 0,
     	newCarsCount = 0,
     	countCats = 6,
@@ -848,6 +1098,7 @@ $(document).ready(function() {
 				$carsshow.hide();
 				$cars.show();
 				$filter.show();
+				$sort.show();
 
 				$('.btnback').hide();
 
@@ -864,6 +1115,7 @@ $(document).ready(function() {
 				$accsshow.show();
 		    	$cars.hide();
 				$filter.hide();
+				$sort.hide();
 		    	$('#formFeedback').hide();
 		    	// getCarInfo(state.uid);
 
@@ -884,6 +1136,7 @@ $(document).ready(function() {
 
     	$cars.hide();
 		$filter.hide();
+		$sort.hide();
 
     	getCarInfo($(event.target).data('id'));
 
@@ -1397,7 +1650,7 @@ $(document).ready(function() {
 					}
 
 					var $col = $('<div />')
-						.addClass('col-xs-6')
+						.addClass('col-xs-6 col-xxs-12')
 						.appendTo($row);
 
 					var $ul = $('<ul />')
