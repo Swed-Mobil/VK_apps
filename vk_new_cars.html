@@ -15,7 +15,27 @@
 	<link rel="stylesheet" href="https://swedmobil.ru/bundles/swedmnews/css/jquery-ui-slider-pips.css">
 
 	<style type="text/css">
+	
+		.ui-state-active,
+		.ui-widget-content .ui-state-active,
+		.ui-widget-header .ui-state-active,
+		a.ui-button:active,
+		.ui-button:active,
+		.ui-button.ui-state-active:hover {
+			border: 1px solid #5e81a8;
+			background: #5e81a8;
+			font-weight: normal;
+			color: #ffffff;
+		}
 
+		.btn-sort .glyphicon  {
+			top: 2px;
+		}
+
+		.sort .row .col-xs-3 {
+			padding-left: 5px;
+			padding-right: 5px;
+		}
 
 		.list-group-item.no-border {
 			border: none;
@@ -228,6 +248,11 @@
 			middle; 
 			width: 85px;"
 		}
+		
+		#collapseLocation .checkbox {
+			margin-right: 15px;
+		}
+
 		.collapseLocationIcon {
 			top: 2px;
 		}
@@ -332,9 +357,13 @@
 <!-- filter -->
 <div class="filter">
 <div class="row">
-	<div class="col-xs-7 col-xxs-12 form-group">
+
+	<div class="col-xs-8 col-xxs-12 form-group">
+
 		<label class="control-label" for="">Цена</label>
+
 		<div id="price-range" class="form-control"></div>
+
 		<div class="input-pipe pull-left">
 			<span >от</span>
 			<input type="text" id="min-price" name="minPrice" class="form-control" autocomplete="off" value="0">
@@ -345,49 +374,86 @@
 			<input type="text" id="max-price" name="maxPrice" class="form-control" autocomplete="off" value="9 000 000">
     		<span >руб.</span>
 		</div>
+
 	</div>
-	<div class="col-xs-5 col-xxs-12">
+
+	<div class="col-xs-1 ">
+	</div>
+
+	<div class="col-xs-3 col-xxs-12 ">
+
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" name="instock" id="instock">
-				Показывать только в наличии
+				В наличии&nbsp;<span class="glyphicon glyphicon glyphicon-check" aria-hidden="true"></span>
 			</label>
 		</div>
+
 		<div class="checkbox">
 			<label>
 				<input type="checkbox" name="sale" id="sale">
-				Показывать только со скидкой
+				Со скидкой&nbsp;<span class="glyphicon glyphicon glyphicon-tag" aria-hidden="true"></span>
 			</label>
 		</div>
+
 	</div>
+
 </div>
 <div class="row">
 	<div class="col-xs-12">
 		<label class="control-label collapseLocationLabel" for="" style="display: block;" data-toggle="collapse" href="#collapseLocation" aria-expanded="false" aria-controls="collapseLocation">Салон Swed-Mobil&nbsp;<span class="glyphicon glyphicon-chevron-down collapseLocationIcon" aria-hidden="true"></span></label>
 		<div class="collapse" id="collapseLocation">
+
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="p" id="locationP">
-					Swed-Mobil Приморский
+					На Приморском
 				</label>
 			</div>
+
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="e" id="locationE">
-					Swed-Mobil Энергетиков
+					На Энергетиков
 				</label>
 			</div>
+
 			<div class="checkbox" style="display: inline-block;">
 				<label>
 					<input type="checkbox" name="location[]" value="Z" id="locationZ">
-					Swed-Mobil Маршала Жукова
+					На Маршала Жукова
 				</label>
 			</div>
+
 		</div>
 	</div>
 </div>
 </div>
 <hr class="filter_hr" >
+
+<div class="sort" style="padding: 5px 10px;">
+
+	<div class="row">
+
+		<div class="col-xs-3">
+		<button class="btn btn-default btn-block btn-sort btn-sort-price" data-sort="down">Цена&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-3">
+		<button class="btn btn-default btn-block btn-sort btn-sort-stock" data-sort="down">Наличие&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-3">
+		<button class="btn btn-default btn-block btn-sort btn-sort-sale" data-sort="down">Скидка&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+		<div class="col-xs-3">
+		<button class="btn btn-default btn-block btn-sort btn-sort-location" data-sort="down">Салон&nbsp;<span class="btn-sort-icon glyphicon glyphicon-menu-down" aria-hidden="true"></span></button>
+		</div>
+
+	</div>
+
+</div>
 
 <div class="cars">
 	<div class="cars-content"></div>
@@ -498,6 +564,166 @@ $(document).ready(function() {
     	changeValMax($(this), $priceRange, true);
     });
 	
+
+    // sort events
+
+    $(document).on('click', '.btn-sort', function(event) {
+
+    	if ($(event.target).hasClass('btn-sort-icon')) {
+    		var $target = $(event.target).parent();
+    	} else {
+    		var $target = $(event.target);
+    	}
+
+		if ($target.attr('data-sort') == 'down') {
+
+			$target.attr('data-sort', 'up');
+			$target.find('.glyphicon-menu-down').removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+
+			if ($target.hasClass('btn-sort-price')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Price > b.Price) 
+				        return -1 
+				    if (a.Price < b.Price)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-stock')) {
+
+				fCars.sort(function(a,b) {
+
+					var stockA= a.DeliveryStatus, stockB=b.DeliveryStatus;
+					
+		    		if (stockA == 'На складе' && stockB != 'На складе')
+				        return 1 
+				    if (stockA != 'На складе' && stockB == 'На складе')
+				        return -1
+				    return 0 
+		    	});
+			}
+
+
+			if ($target.hasClass('btn-sort-sale')) {
+
+				fCars.sort(function(a,b) {
+
+					var saleA = a.Price - a.NewPrice, saleB = b.Price - b.NewPrice;
+					
+		    		if (saleA > saleB)
+				        return -1 
+				    if (saleA < saleB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-location')) {
+
+				fCars.sort(function(a,b) {
+
+					if ( typeof(a.Location) == 'string' && typeof(b.Location) == 'string') {
+
+						var locationA= a.Location.toLowerCase(), locationB=b.Location.toLowerCase()
+
+			    		if (locationA > locationB) 
+					        return -1 
+					    if (locationA < locationB)
+					        return 1
+					    return 0
+
+					} else {
+
+						if ( typeof(a.Location) == 'number' && typeof(b.Location) == 'string' ) 
+							return -1
+						if (typeof(a.Location) == 'string' && typeof(b.Location) == 'number')
+							return -1
+						return 0
+					}
+
+		    	});
+			}
+
+		} else {
+
+			$target.attr('data-sort', 'down');
+			$target.find('.glyphicon-menu-up').removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+
+			if ($target.hasClass('btn-sort-price')) {
+
+				fCars.sort(function(a,b) {
+		    		if (a.Price < b.Price) 
+				        return -1 
+				    if (a.Price > b.Price)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-stock')) {
+
+				fCars.sort(function(a,b) {
+
+					var stockA= a.DeliveryStatus, stockB=b.DeliveryStatus;
+					
+		    		if (stockA == 'На складе' && stockB != 'На складе')
+				        return -1 
+				    if (stockA != 'На складе' && stockB == 'На складе')
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-sale')) {
+
+				fCars.sort(function(a,b) {
+
+					var saleA = a.Price - a.NewPrice, saleB = b.Price - b.NewPrice;
+
+		    		if (saleA < saleB) 
+				        return -1 
+				    if (saleA > saleB)
+				        return 1
+				    return 0 
+		    	});
+			}
+
+			if ($target.hasClass('btn-sort-location')) {
+
+				fCars.sort(function(a,b) {
+
+					if ( typeof(a.Location) == 'string' && typeof(b.Location) == 'string') {
+
+						var locationA= a.Location.toLowerCase(), locationB=b.Location.toLowerCase()
+
+			    		if (locationA < locationB) 
+					        return -1 
+					    if (locationA > locationB)
+					        return 1
+					    return 0
+
+					} else {
+
+						if ( typeof(a.Location) == 'number' && typeof(b.Location) == 'string' )
+							return -1
+						if (typeof(a.Location) == 'string' && typeof(b.Location) == 'number')
+							return -1
+						return 0
+					}
+
+		    	});
+			}
+
+		}
+
+		totalCars = 0;
+    	getCars(countCats, totalCars);
+		renderPages(countCats, fCars.length);
+
+    });	
+	
 	function adjustIframeHeight() {
 		VK.callMethod("resizeWindow", null, $('.vk-app').height() + 20);
     }
@@ -556,6 +782,7 @@ $(document).ready(function() {
     	$carsshow = $('.carsshow'),
     	$accsshow = $('.carsshow'),
 		$filter = $('.filter'),
+		$sort  = $('.sort'),
     	totalCars = 0,
     	newCarsCount = 0,
     	countCats = 6,
@@ -610,6 +837,7 @@ $(document).ready(function() {
 				$carsshow.hide();
 				$cars.show();
 				$filter.show();
+				$sort.show();
 
 				$('.btnback').hide();
 
@@ -621,6 +849,7 @@ $(document).ready(function() {
 				$accsshow.show();
 		    	$cars.hide();
 				$filter.hide();
+				$sort.hide();
 		    	$('#formFeedback').hide();
 		    	// getCarInfo(state.uid);
 
@@ -640,6 +869,7 @@ $(document).ready(function() {
 
     	$cars.hide();
 		$filter.hide();
+		$sort.hide();
 
     	getCarInfo($(event.target).data('uid'));
 
