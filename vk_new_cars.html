@@ -256,14 +256,18 @@
 			width: 85px;"
 		}
 		
-		#collapseLocation .checkbox {
+		#collapseLocation .checkbox, 
+		#collapseModels .checkbox {
 			margin-right: 15px;
 		}
 
-		.collapseLocationIcon {
+		.collapseLocationIcon, 
+		.collapseModelsIcon {
 			top: 2px;
 		}
-		.collapseLocationLabel {
+
+		.collapseLocationLabel, 
+		.collapseModelsLabel {
 			cursor: pointer;
 		}
 		.filter_hr {
@@ -406,6 +410,21 @@
 	</div>
 
 </div>
+
+
+<div class="row">
+
+	<div class="col-xs-12">
+
+		<label class="control-label collapseModelsLabel" for="" style="display: block;" data-toggle="collapse" href="#collapseModels" aria-expanded="false" aria-controls="collapseLocation">Модели&nbsp;<span class="glyphicon glyphicon-chevron-down collapseModelsIcon" aria-hidden="true"></span></label>
+
+		<div class="collapse" id="collapseModels">
+		</div>
+
+	</div>
+
+</div>
+
 <div class="row">
 	<div class="col-xs-12">
 		<label class="control-label collapseLocationLabel" for="" style="display: block;" data-toggle="collapse" href="#collapseLocation" aria-expanded="false" aria-controls="collapseLocation">Салон Swed-Mobil&nbsp;<span class="glyphicon glyphicon-chevron-down collapseLocationIcon" aria-hidden="true"></span></label>
@@ -508,13 +527,18 @@ $(document).ready(function() {
 
 	console.log( "swed mobil app ready!" );
 
-	
 	$('#collapseLocation').on('shown.bs.collapse', function () {
 	    $(".collapseLocationIcon").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
-	});
-	$('#collapseLocation').on('hidden.bs.collapse', function () {
+	}).on('hidden.bs.collapse', function () {
 	    $(".collapseLocationIcon").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
 	});	
+
+	$('#collapseModels').on('shown.bs.collapse', function () {
+	    $(".collapseModelsIcon").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+	}).on('hidden.bs.collapse', function () {
+	    $(".collapseModelsIcon").removeClass("glyphicon-chevron-up").addClass("glyphicon-chevron-down");
+	});	
+	
 	var changeValMin = function (input, slider, locale = false) {
 		var val = input.val().replace(/\s/g,'');
 		if (val < slider.slider("option", "min")) {
@@ -842,6 +866,28 @@ $(document).ready(function() {
     		if ( $('#instock').is(':checked') &&  value.DeliveryStatus != 'На складе') { return true; } 
     		if ( $('#sale').is(':checked') && value.Price == value.NewPrice) { return true; }
     		if ( value.Price > $priceRange.slider("values")[1] ||  value.Price < $priceRange.slider("values")[0] ) { return true; }
+			
+    		// models
+
+    		if ( $('.model-checkbox:checked').length ) {
+
+    			bModel = false;
+
+    			$('.model-checkbox:checked').each(function(i, m) {
+
+    				if (m.value == value.Model) { bModel = true; }
+
+    			});
+
+    			if (!bModel)
+    			{
+    				return true;
+    			}
+
+    		}
+
+    		// locations			
+			
     		if ($('#locationP').is(':checked') || $('#locationE').is(':checked') || $('#locationZ').is(':checked')) {
 	    		if ( 
 	    			$('#locationP').is(':checked') && value.Location == 'Свид-Мобиль Приморский' ||
@@ -864,6 +910,11 @@ $(document).ready(function() {
     $('#locationP').on('change', function(event) { filterCars(); });
     $('#locationZ').on('change', function(event) { filterCars(); });
 
+    $(document).on('change', '.model-checkbox', function(){
+    	filterCars();
+    })
+	
+	
     $('.pagination').on('click', 'a', function (event) {
 
     	$('.pagination').find('li.active').removeClass('active');
@@ -1435,6 +1486,37 @@ $(document).ready(function() {
 		});
     }
 
+	function getCurrentModels(cars)
+    {
+    	models = [];
+
+    	$(cars).each(function(i,c) {
+
+    		bModel = false;
+    		
+    		$(models).each(function(j,m) {
+    			if (m == c.Model) { bModel = true; }
+    		});
+
+    		if (!bModel)
+    		{
+    			models.push( c.Model );
+    		}
+
+    	});
+
+    	$(models).each(function(i,m) {
+
+    		$('<div class="checkbox" style="display: inline-block;">'+
+				'<label>'+
+					'<input class="model-checkbox" type="checkbox" name="model[]" value="'+m+'">'+
+					m+
+				'</label>'+
+			'</div>').appendTo('#collapseModels');
+
+    	});
+    }
+	
 	function getTotalCars(limit = 1000) {
 
     	$.ajax({
@@ -1442,7 +1524,7 @@ $(document).ready(function() {
 			url: 'https://swedmobil.ru/api/v1/newcars?limit=' + limit + '&offset=0',
 			success: function(responseText, statusText, xhr, $form){
 				fCars = cars = responseText;
-
+				getCurrentModels(fCars);
 				getCars(countCats, totalCars);
 				renderPages(countCats, newCarsCount);
 			},
